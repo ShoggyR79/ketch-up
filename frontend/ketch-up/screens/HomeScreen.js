@@ -6,6 +6,8 @@ import colors from "../styles";
 
 import { StatusBar } from 'expo-status-bar';
 
+import { Feather } from '@expo/vector-icons';
+
 const pfp = require('../assets/pfp_test.jpeg')
 const bg = require('../assets/background_test.jpeg')
 
@@ -18,6 +20,7 @@ const HomeScreen = () => {
   return (
     <StyledSafeAreaView className="flex-1 bg-background">
       <StatusBar backgroundColor={colors.dark[50]} />
+
       <View style={{ width: "100%" }}>
 
         <View style={{
@@ -49,6 +52,17 @@ const HomeScreen = () => {
               // position: "absolute",
             }}>
           </Image>
+          <TouchableOpacity style={{
+            position: "absolute",
+            right: 15,
+            top: -100,
+            // borderWidth: 1,
+            // borderColor: colors.light,
+            padding: 15,
+            borderRadius: 999,
+          }}>
+            <Feather name="log-out" size={24} color="white" style={{ zIndex: 1 }} />
+          </TouchableOpacity>
 
 
         </StyledView>
@@ -66,16 +80,16 @@ const HomeScreen = () => {
           </Text>
           <StyledView className='flex-row w-100 h-16 mt-2 items-center justify-around'>
             <StyledView className='items-center'>
-              <Text style={{ fontSize: "20", fontWeight: "600" }}>20</Text>
-              <Text style={{ fontSize: "16" }}>Ketches</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>20</Text>
+              <Text style={{ fontSize: 16 }}>Ketches</Text>
             </StyledView>
             <StyledView className='items-center '>
-              <Text style={{ fontSize: "20", fontWeight: "600" }}>5</Text>
-              <Text style={{ fontSize: "16" }}>Streak</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>5</Text>
+              <Text style={{ fontSize: 16 }}>Streak</Text>
             </StyledView>
             <StyledView className='items-center '>
-              <Text style={{ fontSize: "20", fontWeight: "600" }}>5</Text>
-              <Text style={{ fontSize: "16" }}>Ongoing</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>5</Text>
+              <Text style={{ fontSize: 16 }}>Ongoing</Text>
             </StyledView>
           </StyledView>
         </View>

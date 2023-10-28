@@ -20,9 +20,10 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.getItem('userId').then((value) => {
             setUser(value);
         })
-    })
+    }, [user])
     const handleLogout = async () => {
         await AsyncStorage.removeItem('userId');
+        setUser(null)
     }
 
     const handleLogin = async (email, password) => {

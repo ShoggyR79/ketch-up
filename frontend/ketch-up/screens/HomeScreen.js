@@ -6,6 +6,7 @@ import colors from "../styles";
 
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
+import useAuth from '../hooks/useAuth';
 
 const pfp = require('../assets/pfp_test.jpg')
 
@@ -16,6 +17,8 @@ const StyledText = styled(Text);
 
 
 const HomeScreen = () => {
+  const {handleLogout} = useAuth();
+
   return (
     <StyledSafeAreaView className="flex-1 bg-background">
       <StatusBar backgroundColor={colors.dark[50]} />
@@ -54,13 +57,14 @@ const HomeScreen = () => {
           <TouchableOpacity style={{
             position: "absolute",
             right: 15,
-            top: -100,
+            top: -30,
             // borderWidth: 1,
             // borderColor: colors.light,
             padding: 15,
             borderRadius: 999,
-          }}>
-            <Feather name="log-out" size={24} color="white" style={{ zIndex: 1 }} />
+          }}
+          onPress={handleLogout}>
+            <Feather name="log-out" size={24} color="black" style={{ zIndex: 1 }} />
           </TouchableOpacity>
 
 

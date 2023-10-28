@@ -18,8 +18,13 @@ const data = [];
 
 
 const KetchesScreen = () => {
+  const {user} = useAuth();
   const [activeKetchType, setActiveKetchType] = useState("scheduled");
   const [isEmpty, setIsEmpty] = useState(false);
+
+  useEffect(()=> {
+
+  }, [user])
   return (
     <StyledSafeAreaView className='flex-1 bg-background'>
       <StyledView className='p-5'>

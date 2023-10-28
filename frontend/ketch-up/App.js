@@ -4,13 +4,16 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 import StackNavigator from './navigation/StackNavigator';
+import { AuthProvider } from './hooks/useAuth';
 
 
 export default function App() {
   return (
+    <AuthProvider>
+      <StackNavigator />
+    </AuthProvider>
 
-    <StackNavigator/>
-    
+
   );
 }
 

@@ -5,12 +5,15 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import Tabbar from './Tab';
 import useAuth from '../hooks/useAuth';
+import CreateKetchScreen from '../screens/CreateKetchScreen';
+import JoinKetchScreen from '../screens/JoinKetchScreen';
+import ModalKetch from '../screens/ModalKetch';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
-    user = "sfe"; // placeholder
-    // const {user} = useAuth();
+    // user = ""; // placeholder
+    const {user} = useAuth();
     return (
         <NavigationContainer >
             <Stack.Navigator screenOptions={{
@@ -18,12 +21,22 @@ const StackNavigator = () => {
             }}>
                 {user ? (
                     <>
-                        <Stack.Screen name="Tab" component={Tabbar} />
+                        <Stack.Group>
+                            <Stack.Screen name="Tab" component={Tabbar} />
+                            <Stack.Screen name="Join" component={JoinKetchScreen} />
+                            <Stack.Screen name="Create" component={CreateKetchScreen} />
+
+                        </Stack.Group>
+                        <Stack.Group screenOptions={{ presentation: "containedTransparentModal" }}>
+                            <Stack.Screen name="Modal" component={ModalKetch} />
+                        </Stack.Group>
                     </>
                 ) :
                     <>
-                        <Stack.Screen name="Login" children={LoginScreen} />
-                        <Stack.Screen name="Register" children={RegisterScreen} />
+                        <Stack.Group>
+                            <Stack.Screen name="Login" component={LoginScreen} />
+                            <Stack.Screen name="Register" component={RegisterScreen} />
+                        </Stack.Group>
                     </>
                 }
             </Stack.Navigator>

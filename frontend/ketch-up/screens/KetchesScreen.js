@@ -76,36 +76,43 @@ const KetchesScreen = () => {
 
               //   />
               // })
-              <TouchableOpacity
+              <View
                 style={{
                   width: "100%",
                   borderColor: colors.dark[100],
-                  borderWidth: 2,
+                  borderWidth: 3,
                   paddingVertical: 10,
                   paddingHorizontal: 10,
                   borderRadius: 20,
                   flexDirection: 'row',
+                  justifyContent: "space-between"
 
                 }}>
-                <Image source={require("../assets/pfp_test.jpeg")}
-                  style={{
-                    resizeMode: "contain",
-                    height: 80,
-                    width: 80,
-                    borderRadius: 999,
-                  }} />
-                <StyledView className='ml-5'>
-                  <StyledText className='text-lg font-medium'>Ketch Name</StyledText>
-                  <StyledText>Nov 1, 2023</StyledText>
-                  <StyledText>with Jerry, Sharkie</StyledText>
+                <StyledView className='flex-row'>
+                  <Image source={require("../assets/pfp_test.jpeg")}
+                    style={{
+                      resizeMode: "contain",
+                      height: 80,
+                      width: 80,
+                      borderRadius: 999,
+                    }} />
+                  <StyledView className='ml-5 justify-around'>
+                    <StyledText className='text-lg font-medium'>Ketch Name</StyledText>
+                    <StyledText>Nov 1, 2023</StyledText>
+                    <StyledText className='text-dark-200'>with Jerry, Sharkie</StyledText>
 
+                  </StyledView>
                 </StyledView>
 
-                <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]}></Entypo>
+                <TouchableOpacity style={{ alignSelf: 'center' }}>
+                  <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
+                </TouchableOpacity>
 
 
 
-              </TouchableOpacity>
+
+
+              </View>
 
             )}
           </StyledView>

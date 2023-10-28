@@ -28,7 +28,7 @@ const HomeScreen = () => {
           // borderRadiuas: 999,
           borderBottomEndRadius: 180,
           borderBottomStartRadius: 180,
-          marginTop: -100,
+          marginTop: -60,
           overflow: "hidden",
           alignSelf: "center",
           // position: "absolute",

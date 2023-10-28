@@ -19,6 +19,7 @@ const HomeScreen = () => {
   return (
     <StyledSafeAreaView className="flex-1 bg-background">
       <StatusBar backgroundColor={colors.dark[50]} />
+
       <View style={{ width: "100%" }}>
 
         <View style={{
@@ -50,7 +51,6 @@ const HomeScreen = () => {
               // position: "absolute",
             }}>
           </Image>
-
           <TouchableOpacity style={{
             position: "absolute",
             right: 15,

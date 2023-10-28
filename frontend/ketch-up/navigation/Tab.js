@@ -26,6 +26,7 @@ const Tabbar = () => {
 
       screenOptions={{
         tabBarShowLabel: false,
+        headerShown: false,
         tabBarStyle: {
 
           position: "absolute",

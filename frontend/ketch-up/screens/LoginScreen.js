@@ -1,12 +1,16 @@
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native'
-import React, {useState} from 'react'
-import {useNavigation} from '@react-navigation/native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import useAuth from '../hooks/useAuth'
-import {styled} from "nativewind"
+import { styled } from "nativewind"
 
-const LoginScreen = ({navigation}) => {
-    const {handleLogin} = useAuth();
+import colors from "../styles"
+
+const StyledTouchable = styled(TouchableOpacity);
+
+const LoginScreen = ({ navigation }) => {
+    const { handleLogin } = useAuth();
     const [error, setError] = useState("");
 
     const [email, setEmail] = useState('');
@@ -31,37 +35,39 @@ const LoginScreen = ({navigation}) => {
                 </View>
                 <View className="flex-row justify-center">
                     <Image source={require('../assets/icons/icon3.png')}
-                           style={{width: 200, height: 200, alignSelf: "center", justifyContent: "center"}}/>
+                        style={{ width: 200, height: 200, alignSelf: "center", justifyContent: "center" }} />
                 </View>
             </SafeAreaView>
-            <View className="flex-1 bg-[#FBEEE8] px-8 pt-8"
-                  style={{borderTopLeftRadius: 50, borderTopRightRadius: 50}}>
+            <View className="flex-1 bg-background px-8 pt-8"
+                style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}>
                 <View className="form space-y-2">
-                    <Text style={{color: "red"}}>{error}</Text>
-                    <Text className="text-gray-700 ml-4">Email</Text>
+                    <Text style={{ color: "red" }}>{error}</Text>
+                    <Text className="text-dark-300 text-lg font-semibold ml-4">Email</Text>
                     <TextInput
-                        className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
+                        className="p-4 border-2 border-dark-100  bg-gray-100 text-gray-700 rounded-2xl mb-3"
                         value={email}
                         onChangeText={setEmail}
-                        placeholder="Enter email"/>
-                    <Text className="text-gray-700 ml-4">Password</Text>
+                        placeholder="Enter email"
+                        placeholderTextColor={colors.dark[300]} />
+                    <Text className="text-dark-300 text-lg font-semibold ml-4">Password</Text>
                     <TextInput
-                        className="p-4 bg-gray-100 text-gray-700 rounded-2xl"
+                        className="p-4 border-2 border-dark-100  bg-gray-100 text-gray-700 rounded-2xl mb-3"
                         secureTextEntry
                         value={password}
                         onChangeText={setPassword}
-                        placeholder="Password"/>
-                    <TouchableOpacity
+                        placeholder="Password"
+                        placeholderTextColor={colors.dark[300]} />
+                    <StyledTouchable
                         onPress={async () => await login(email, password)}
-                        className="py-3 bg-accent-std rounded-xl">
-                        <Text className="font-xl font-bold text-center text-gray-700">
+                        className="py-3 my-5 border-2 border-dark-200 bg-accent-std rounded-xl">
+                        <Text className="text-lg font-semibold text-center text-dark-300">
                             Login
                         </Text>
-                    </TouchableOpacity>
+                    </StyledTouchable>
                     <View className="flex-row justify-center mt-7">
-                        <Text className="text-gray-500 font font-semibold">Don't have an account?</Text>
+                        <Text className="text-dark-200 text-lg font-semibold">Don't have an account?</Text>
                         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                            <Text className="font-semibold text-ketchup-light"> Sign Up</Text>
+                            <Text className="font-semibold text-lg text-ketchup-std"> Sign Up</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

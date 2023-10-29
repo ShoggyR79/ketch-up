@@ -16,7 +16,7 @@ const { API_LINK } = require('../env.js')
 const JoinKetchScreen = ({ navigation }) => {
     const [joinCode, setJoinCode] = React.useState("");
     const [error, setError] = React.useState("");
-    const {user} = useAuth()
+    const { user } = useAuth()
     const joinKetch = async () => {
         // need to be 6 alphanumeric characters
         if (joinCode.length !== 6) {
@@ -27,9 +27,12 @@ const JoinKetchScreen = ({ navigation }) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ joinCode, userId:user })
+            body: JSON.stringify({ joinCode, userId: user })
         })
         const data = await response.json()
+
+        console.log(data);
+
         if (response.status === 201) {
             // success
             navigation.navigate("Ketch", { id: data.message })

@@ -1,7 +1,18 @@
-import { View, Text, Button, TextInput } from 'react-native'
+import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import useAuth from '../hooks/useAuth.js';
+
+import colors from "../styles"
+
+import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { styled } from 'nativewind';
+import { MaterialIcons } from '@expo/vector-icons';
+
+const StyledText = styled(Text);
+const StyledTouchable = styled(TouchableOpacity);
+const StyledView = styled(View);
 
 
 const { API_LINK } = require('../env.js')
@@ -32,24 +43,56 @@ const CreateKetchScreen = ({ navigation }) => {
     }
   }
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'start',
+      top: 250,
+      backgroundColor: colors.ketchup.lighter,
+      borderTopRightRadius: 40,
+      borderTopLeftRadius: 40,
+      paddingHorizontal: 20,
+    }}>
+      <StyledTouchable className='mt-5 self-start' onPress={() => { navigation.goBack() }}>
+        <FontAwesome5 name="chevron-down" size={24} color="black" />
+      </StyledTouchable>
+      <StyledText className='text-2xl font-semibold tracking-wider mb-5'>host a ketch</StyledText>
       <Text style={{ color: "red" }}>{error}</Text>
-      <Text>Ketch Name:</Text>
+
+      <StyledText className='self-start mb-2 text-lg font-semibold'>Ketch Name:</StyledText>
+
       <TextInput
         style={{
-          height: 40,
-          margin: 12,
-          borderWidth: 1,
-          padding: 10,
+          height: 50,
+          width: "100%",
+          // margin: 12,
+          borderWidth: 2,
+          paddingVertical: 12,
+          paddingHorizontal: 15,
+          backgroundColor: colors.dark[100],
+          borderRadius: 20,
+          color: colors.dark[300],
+
         }}
+        // onChangeText={setJoinCode}
+        // value={joinCode}
+        // placeholder="code"
         onChangeText={setName}
         value={name}
-        placeholder="Enter ketch name"
+        placeholder="give this ketch a name!"
+        placeholderTextColor={colors.dark[300]}
       />
-      <Text>Deadline:</Text>
-      <Text>{date.toLocaleString()}</Text>
 
-      <Button title="Set Deadline" onPress={() => setOpen(true)} />
+      <StyledView className='self-start items-start mt-3 flex-row'>
+        <StyledText className='self-start mt-5 mb-2 text-lg font-semibold'>Deadline:   </StyledText>
+        <StyledText className='self-start mt-5 mb-2 text-lg font-md'>{date.toDateString()}</StyledText>
+        {/* <Text>{date.toLocaleString()}</Text> */}
+        <StyledTouchable className='rounded-3xl bg-accent-std border-2 p-2 self-center ml-16' onPress={() => setOpen(true)} >
+          <MaterialIcons name="date-range" size={24} color="black" />
+        </StyledTouchable>
+
+      </StyledView>
+
       {open && (
         <DateTimePicker
           value={date}
@@ -58,29 +101,35 @@ const CreateKetchScreen = ({ navigation }) => {
           onChange={onChange}
         />
       )}
-      <Text>Ketch Location:</Text>
+
+      <StyledText className='self-start mt-2 mb-2 text-lg font-semibold'>Ketch Location:</StyledText>
+
       <TextInput
         style={{
-          height: 40,
-          margin: 12,
-          borderWidth: 1,
-          padding: 10,
+          height: 50,
+          width: "100%",
+          // margin: 12,
+          borderWidth: 2,
+          paddingVertical: 12,
+          paddingHorizontal: 15,
+          backgroundColor: colors.dark[100],
+          borderRadius: 20,
+          color: colors.dark[300],
+
         }}
+
         onChangeText={setLocation}
+
         value={location}
-        placeholder="Enter ketch name"
+        placeholder="nashville, the moon, your mom's basement, etc"
+        placeholderTextColor={colors.dark[300]}
       />
-      <Button
-        title="CREATE"
-        onPress={() => { createKetch() }}
-      />
-      <Button
-        style={{
-          margin:12
-        }}
-        title="Go back"
-        onPress={() => { navigation.goBack() }}
-      />
+
+      <StyledTouchable className='mt-5 py-2 px-6 border-2 bg-accent-std rounded-2xl' onPress={() => { createKetch() }}>
+        <StyledText className='text-xl font-semibold '>create</StyledText>
+
+      </StyledTouchable>
+
     </View>
   )
 }

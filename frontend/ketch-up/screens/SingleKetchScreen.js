@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
-import {Image} from 'expo-image'
+import { Image } from 'expo-image'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'nativewind'
 import colors from "../styles"
@@ -15,10 +15,10 @@ const StyledText = styled(Text);
 const pfp = require("../assets/pfp_test.jpeg")
 
 const defaultKetch = {
-    name : "Ketch Name",
+    name: "Ketch Name",
     status: "IN PROGRESS",
     deadline: "'05 October 2011 14:48 UTC'",
-    photo:"",
+    photo: "",
     creator: "",
     joincode: "",
     preference: {},
@@ -32,15 +32,14 @@ const defaultKetch = {
 }
 
 const SingleKetchScreen = ({ route, navigation }) => {
-    const {ketchId} = route.params
+    const { ketchId } = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
     useEffect(()=>{
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
         .then((data) => {setKetch(data.message); })
-    
     }, [ketchId])
     return (
-        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{...AndroidStyles.droidSafeArea}}>
+        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{
                 position: "absolute",
                 top: 60,

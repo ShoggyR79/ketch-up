@@ -1,12 +1,15 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-
+import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
+import {React, useState, useEffect} from 'react'
+import { Image } from 'expo-image';
 import { styled } from "nativewind";
 import colors from "../styles";
 
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 import useAuth from '../hooks/useAuth';
+import { API_LINK } from '../env';
+
+import AndroidStyles from '../AndroidStyles'
 
 const pfp = require('../assets/pfp_test.jpg')
 
@@ -17,10 +20,26 @@ const StyledText = styled(Text);
 
 
 const HomeScreen = () => {
-  const {handleLogout} = useAuth();
+  const {user, handleLogout} = useAuth();
+  const [name, setName] = useState("");
+  const [streak, setStreak] = useState(0)
+  const [ongoing, setOngoing] = useState(0)
+  const [icon, setIcon] = useState("")
+  const [photos, setPhotos] = useState([])
+  const [ketchList, setKetchList] = useState([])
+
+  useEffect(() => {
+    fetch(API_LINK + '/user/' + user).then((response) => response.json())
+      .then((userObject) => {
+        setName(userObject.name)
+        setStreak(userObject.streak)
+        setIcon(userObject.icon)
+        setKetchList(userObject.ketches)
+      })
+  }, [user])
 
   return (
-    <StyledSafeAreaView className="flex-1 bg-background">
+    <StyledSafeAreaView className="flex-1 bg-background" style={{...AndroidStyles.droidSafeArea}}>
       <StatusBar backgroundColor={colors.dark[50]} />
 
       <View style={{ width: "100%" }}>
@@ -41,8 +60,8 @@ const HomeScreen = () => {
 
 
         <StyledView className='flex-1 items-center'>
-          <Image source={pfp}
-            resizeMode='contain'
+          <Image source={icon}
+            contentFit='contain'
             style={{
               height: 155,
               width: 155,
@@ -79,19 +98,19 @@ const HomeScreen = () => {
             fontWeight: '600',
 
           }}>
-            Du Duong
+            {name}
           </Text>
           <StyledView className='flex-row w-100 h-16 mt-2 items-center justify-around'>
             <StyledView className='items-center'>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>20</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>{ketchList.length}</Text>
               <Text style={{ fontSize: 16 }}>Ketches</Text>
             </StyledView>
             <StyledView className='items-center '>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>5</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>{streak}</Text>
               <Text style={{ fontSize: 16 }}>Streak</Text>
             </StyledView>
             <StyledView className='items-center '>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>5</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>{ketchList.length-ketchList.filter(elem => elem.status === "COMPLETED").length}</Text>
               <Text style={{ fontSize: 16 }}>Ongoing</Text>
             </StyledView>
           </StyledView>
@@ -104,40 +123,21 @@ const HomeScreen = () => {
           paddingHorizontal: 10,
           marginVertical: -40,
         }}>
-          <TouchableOpacity>
-            <Image source={pfp} style={{
-              width: 120,
-              height: 120,
-              marginBottom: 5,
-
-            }} />
-
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image source={pfp} style={{
-              width: 120,
-              height: 120,
-              marginBottom: 5,
-            }} />
-
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image source={pfp} style={{
-              width: 120,
-              height: 120,
-              marginBottom: 5,
-            }} />
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Image source={pfp} style={{
-              width: 120,
-              height: 120,
-              marginBottom: 5,
-            }} />
-          </TouchableOpacity>
+          <FlatList
+            data={ketchList.filter(item => item.status == "COMPLETED")}
+            keyExtractor={item => item._id}
+            contentContainerStyle={{ columnGap: 10 }}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <TouchableOpacity>
+                <Image source={item.photo} style={{
+                  width: 120,
+                  height: 120,
+                  marginBottom: 5,
+                }} />
+              </TouchableOpacity>
+            )}>
+          </FlatList>
 
         </View>
       </View>

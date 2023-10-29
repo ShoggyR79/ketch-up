@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async (email, password) => {
         // call api to login
-        console.log(API_LINK + '/user/login')
+        // console.log(API_LINK + '/user/login')
         const response = await fetch(API_LINK + '/user/login', {
             method: 'POST',
             headers: {
@@ -36,9 +36,11 @@ export const AuthProvider = ({ children }) => {
             },
             body: JSON.stringify({ email, password })
         })
+        console.log("return")
         // 200 successful, 400 incorrect
         const data = await response.json()
         if (response.status === 201) {
+            console.log(data)
             setUser(data)
             storeId(data) // store to localHost
             return { status: 'success', userId: data }

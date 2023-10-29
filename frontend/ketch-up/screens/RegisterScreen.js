@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import useAuth from '../hooks/useAuth'
 import { styled } from "nativewind"
 
+const { API_LINK } = require('../env.js')
+
 const RegisterScreen = () => {
   const navigation = useNavigation();
   const { handleLogin } = useAuth();
@@ -12,22 +14,32 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passMatch, setPassMatch] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSignUp = () => {
-    if (!passMatch) {
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
       setErrorMessage('Password do not match. Please try again.');
+      return;
     }
-    else {
-      setErrorMessage('');
-      // Put backend connecting code here
-    }
+    // call register api
+    // if sucessful -> handleLogin(email, password)
+    const signup = await fetch(API_LINK + '/user/signup', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        name: name,
+        email: email,
+        password: password 
+      })
+    })
+    handleLogin(email, password)
   }
 
   return (
     <View className="flex-1 bg-ketchup-light">
-      {/*<Text style={{ color: "red" }}>{error}</Text>*/}
+      <Text style={{ color: "red" }}>{errorMessage}</Text>
       <SafeAreaView className="flex">
         <View className="flex-row justify-start">
           <TouchableOpacity
@@ -71,9 +83,6 @@ const RegisterScreen = () => {
             value={confirmPassword}
             onChangeText={(text) => {
               setConfirmPassword(text)
-              if (password === confirmPassword) {
-                setPassMatch(true);
-              }
             }}
             placeholder="Confirm Password" />
           {errorMessage !== '' && <Text style={{ color: 'red', marginBottom: 10 }}>

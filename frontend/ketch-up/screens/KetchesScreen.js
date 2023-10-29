@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native'
 import { styled } from 'nativewind';
 import colors from "../styles";
@@ -7,26 +7,31 @@ import KetchCard from './components/KetchCard';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
+import useAuth from '../hooks/useAuth';
 
+import AndroidStyles from '../AndroidStyles';
+const { API_LINK } = require('../env.js')
 
 const StyledSafeAreaView = styled(SafeAreaView);
 const StyledText = styled(Text);
 const StyledView = styled(View);
 
-const ketchType = ["scheduled", "planning", "completed", "canceled"]
+const ketchType = ["SCHEDULED", "PLANNING", "COMPLETED", "CANCELED"]
 const data = [];
 
 
 const KetchesScreen = () => {
-  const {user} = useAuth();
-  const [activeKetchType, setActiveKetchType] = useState("scheduled");
+  const { user } = useAuth();
+  const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [ketchList, setKetchList] = useState([])
 
-  useEffect(()=> {
-
+  useEffect(() => {
+    fetch(API_LINK + '/user/' + user).then((response) => response.json())
+      .then((userObject) => setKetchList(userObject.ketches))
   }, [user])
   return (
-    <StyledSafeAreaView className='flex-1 bg-background'>
+    <StyledSafeAreaView className='flex-1 bg-background' style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>
       <StyledView className='p-5'>
         <StyledView>
           <StyledText className='font-semibold text-xl'>manage my ketches</StyledText>
@@ -66,55 +71,61 @@ const KetchesScreen = () => {
           </View>
           {/*Display ketches by categories*/}
 
-          <StyledView className='flex mt-6 w-100 items-center '>
+          <StyledView className='flex mt-6 w-100 items-center'>
             {isEmpty ? (
               <Text>nothing to see here!</Text>
-            ) : (
-              // data?.map((ketch) => {
-              //   <KetchCard
-              //     item = {ketch}
+            ) :
+              <View style={{height:'88%'}}>
+                <FlatList
+                  data={ketchList}
+                  keyExtractor={item => item._id}
+                  style={{
+                    overflow: "scroll",
+                  }}
+                  renderItem={({ item }) => (
+                    <View
+                      style={{
+                        width: "100%",
+                        borderColor: colors.dark[100],
+                        borderWidth: 3,
+                        paddingVertical: 10,
+                        paddingHorizontal: 10,
+                        borderRadius: 20,
+                        flexDirection: 'row',
+                        justifyContent: "space-between"
 
-              //   />
-              // })
-              <View
-                style={{
-                  width: "100%",
-                  borderColor: colors.dark[100],
-                  borderWidth: 3,
-                  paddingVertical: 10,
-                  paddingHorizontal: 10,
-                  borderRadius: 20,
-                  flexDirection: 'row',
-                  justifyContent: "space-between"
+                      }}>
+                      <StyledView className='flex-row'>
+                        <Image source={require("../assets/pfp_test.jpeg")}
+                          style={{
+                            resizeMode: "contain",
+                            height: 80,
+                            width: 80,
+                            borderRadius: 999,
+                          }} />
+                        <StyledView className='ml-5 justify-around'>
+                          <StyledText className='text-lg font-medium'>{item.name}</StyledText>
+                          <StyledText>{item.deadline}</StyledText>
+                          <StyledText className='text-dark-200'>with {
+                            item.users.map(user => user.name).join(",").length > 30 ?
+                              item.users.map(user => user.name).join(",").substr(0, 27) + "..." :
+                              item.users.map(user => user.name).join(",")
+                          }</StyledText>
 
-                }}>
-                <StyledView className='flex-row'>
-                  <Image source={require("../assets/pfp_test.jpeg")}
-                    style={{
-                      resizeMode: "contain",
-                      height: 80,
-                      width: 80,
-                      borderRadius: 999,
-                    }} />
-                  <StyledView className='ml-5 justify-around'>
-                    <StyledText className='text-lg font-medium'>Ketch Name</StyledText>
-                    <StyledText>Nov 1, 2023</StyledText>
-                    <StyledText className='text-dark-200'>with Jerry, Sharkie</StyledText>
+                        </StyledView>
+                      </StyledView>
 
-                  </StyledView>
-                </StyledView>
+                      <TouchableOpacity style={{ alignSelf: 'center' }}>
+                        <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
+                      </TouchableOpacity>
 
-                <TouchableOpacity style={{ alignSelf: 'center' }}>
-                  <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
-                </TouchableOpacity>
-
-
-
-
-
+                    </View>
+                  )}
+                >
+                </FlatList>
               </View>
 
-            )}
+            }
           </StyledView>
 
         </StyledView>

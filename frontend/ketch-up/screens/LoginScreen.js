@@ -7,9 +7,17 @@ import {styled} from "nativewind"
 
 const LoginScreen = ({navigation}) => {
     const {handleLogin} = useAuth();
+    const [error, setError] = useState("");
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const login = async (email, password) => {
+        const response = await handleLogin(email, password)
+        if (response.status === 'error') {
+            setError(response.message)
+        }
+    }
     return (
         <View className="flex-1 bg-ketchup-light">
             <SafeAreaView className="flex">
@@ -29,6 +37,7 @@ const LoginScreen = ({navigation}) => {
             <View className="flex-1 bg-[#FBEEE8] px-8 pt-8"
                   style={{borderTopLeftRadius: 50, borderTopRightRadius: 50}}>
                 <View className="form space-y-2">
+                    <Text style={{color: "red"}}>{error}</Text>
                     <Text className="text-gray-700 ml-4">Email</Text>
                     <TextInput
                         className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
@@ -43,7 +52,7 @@ const LoginScreen = ({navigation}) => {
                         onChangeText={setPassword}
                         placeholder="Password"/>
                     <TouchableOpacity
-                        onPress={() => handleLogin(email, password)}
+                        onPress={() => login(email, password)}
                         className="py-3 bg-accent-std rounded-xl">
                         <Text className="font-xl font-bold text-center text-gray-700">
                             Login

@@ -20,7 +20,11 @@ const ketchType = ["SCHEDULED", "PLANNING", "COMPLETED", "CANCELED"]
 const data = [];
 
 
+<<<<<<< HEAD
 const KetchesScreen = ({navigation}) => {
+=======
+const KetchesScreen = ({ navigation }) => {
+>>>>>>> 72b8338 (modal changes)
   const { user } = useAuth();
   const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
   const [isEmpty, setIsEmpty] = useState(false);
@@ -75,7 +79,7 @@ const KetchesScreen = ({navigation}) => {
             {isEmpty ? (
               <Text>nothing to see here!</Text>
             ) :
-              <View style={{height:'88%'}}>
+              <View style={{ height: '88%' }}>
                 <FlatList
                   data={ketchList}
                   keyExtractor={item => item._id}
@@ -86,12 +90,13 @@ const KetchesScreen = ({navigation}) => {
                     <View
                       style={{
                         width: "100%",
-                        borderColor: colors.dark[100],
+                        borderColor: colors.dark[200],
                         borderWidth: 3,
                         paddingVertical: 10,
                         paddingHorizontal: 10,
                         borderRadius: 20,
                         flexDirection: 'row',
+                        marginBottom: 8,
                         justifyContent: "space-between"
 
                       }}>
@@ -115,9 +120,16 @@ const KetchesScreen = ({navigation}) => {
                         </StyledView>
                       </StyledView>
 
+<<<<<<< HEAD
                       <TouchableOpacity style={{ alignSelf: 'center' }} onPress={()=>
                         {navigation.navigate("Ketch", { ketchId: item._id })}
                       }>
+=======
+                      <TouchableOpacity
+                        style={{ alignSelf: 'center' }}
+
+                      >
+>>>>>>> 72b8338 (modal changes)
                         <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
                       </TouchableOpacity>
 

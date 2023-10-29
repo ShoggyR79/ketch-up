@@ -26,16 +26,15 @@ const StackNavigator = () => {
                     <>
                         <Stack.Group>
                             <Stack.Screen name="Tab" component={Tabbar} />
-                            <Stack.Screen name="Join" component={JoinKetchScreen} />
-                            <Stack.Screen name="Create" component={CreateKetchScreen} />
+
                             <Stack.Screen name="Ketch" component={SingleKetchScreen} />
                             <Stack.Screen name="Swipe" component={SwipeActivityScreen} />
                             <Stack.Screen name="Ketches" component={KetchesScreen} />
-
-
                         </Stack.Group>
                         <Stack.Group screenOptions={{ presentation: "containedTransparentModal" }}>
                             <Stack.Screen name="Modal" component={ModalKetch} />
+                            <Stack.Screen name="Join" component={JoinKetchScreen} />
+                            <Stack.Screen name="Create" component={CreateKetchScreen} />
                         </Stack.Group>
                     </>
                 ) :

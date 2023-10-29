@@ -1,6 +1,6 @@
 import { View, Text, Button, TextInput } from 'react-native'
 import React from 'react'
-import {styled} from "nativewind";
+import { styled } from "nativewind";
 
 const { API_LINK } = require('../env.js')
 const JoinKetchScreen = ({ navigation }) => {
@@ -28,7 +28,16 @@ const JoinKetchScreen = ({ navigation }) => {
         }
     }
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            top: 200,
+            backgroundColor: "black",
+            borderTopRightRadius: 40,
+            borderTopLeftRadius: 40,
+
+        }}>
             <Text style={{ color: "red" }}>{error}</Text>
             <TextInput
                 style={{

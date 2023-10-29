@@ -32,6 +32,7 @@ const defaultKetch = {
 }
 
 const SingleKetchScreen = ({ route, navigation }) => {
+<<<<<<< HEAD
     const {ketchId} = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
     useEffect(()=>{
@@ -40,6 +41,10 @@ const SingleKetchScreen = ({ route, navigation }) => {
         .then((ketchObject) => setKetch(ketchObject))
     
     }, [ketchId])
+=======
+    const { ketchId } = route.params
+    console.log(ketchId)
+>>>>>>> 05946a8 (pre merge)
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{...AndroidStyles.droidSafeArea}}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{
@@ -77,6 +82,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
                             justifyContent: "center",
                             backgroundColor: 
                         }}> */}
+<<<<<<< HEAD
                         <StyledText className='mt-1 text-lg font-md text-grey'>Status: 
                             {
                                 curKetch.status == "SCHEDULED" &&
@@ -95,6 +101,19 @@ const SingleKetchScreen = ({ route, navigation }) => {
                                 <StyledText className="text-red-600">{" " + curKetch.status}</StyledText>
                             }
                         </StyledText>
+=======
+                        {/* <StyledView className='flex-row mt-2 justify-center items-center'> */}
+                        {/* <StyledView className='border-2 p-2 border-dark-200 rounded-xl mx-1'> */}
+                        <StyledView className='border-2 px-3 py-2 my-2 bg-accent-light border-dark-200 rounded-xl mx-1'>
+                            <StyledText className='mt-1 text-2xl font-semibold text-dark-300 '>Code: KBHDSF</StyledText>
+                        </StyledView>
+                        <StyledText className=' text-md font-semibold text-ketchup-dark'>in-planning ketch</StyledText>
+                        {/* </StyledView> */}
+
+
+                        {/* </StyledView> */}
+
+>>>>>>> 05946a8 (pre merge)
                         {/* </View> */}
 
                     </StyledView>
@@ -123,7 +142,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
                                     flexGrow: 0,
                                     overflow: "scroll",
                                     // height: "80%",
-                                    height: "60%",
+                                    height: "55%",
 
                                 }}
                                 renderItem={({ item }) => (

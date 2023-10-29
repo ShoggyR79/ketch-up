@@ -20,11 +20,7 @@ const ketchType = ["SCHEDULED", "PLANNING", "COMPLETED", "CANCELED"]
 const data = [];
 
 
-<<<<<<< HEAD
-const KetchesScreen = ({navigation}) => {
-=======
 const KetchesScreen = ({ navigation }) => {
->>>>>>> 72b8338 (modal changes)
   const { user } = useAuth();
   const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
   const [isEmpty, setIsEmpty] = useState(false);
@@ -120,16 +116,8 @@ const KetchesScreen = ({ navigation }) => {
                         </StyledView>
                       </StyledView>
 
-<<<<<<< HEAD
-                      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={()=>
-                        {navigation.navigate("Ketch", { ketchId: item._id })}
+                      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { navigation.navigate("Ketch", { ketchId: item._id }) }
                       }>
-=======
-                      <TouchableOpacity
-                        style={{ alignSelf: 'center' }}
-
-                      >
->>>>>>> 72b8338 (modal changes)
                         <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
                       </TouchableOpacity>
 

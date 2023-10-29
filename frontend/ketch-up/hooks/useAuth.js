@@ -16,11 +16,11 @@ export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
 
-    useEffect(()=> {
+    useEffect(() => {
         AsyncStorage.getItem('userId').then((value) => {
             setUser(value);
         })
-    }, [user])
+    }, [])
     const handleLogout = async () => {
         await AsyncStorage.removeItem('userId');
         setUser(null)

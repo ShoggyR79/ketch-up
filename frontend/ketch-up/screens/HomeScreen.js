@@ -19,7 +19,7 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const { user, handleLogout } = useAuth();
   const [name, setName] = useState("");
   const [streak, setStreak] = useState(0)
@@ -131,7 +131,7 @@ const HomeScreen = () => {
             width: "100%",
           }}>
             <FlatList
-              data={ketchList.concat(ketchList).concat(ketchList).filter(item => item.status == "COMPLETED")}
+              data={ketchList.filter(item => item.status == "COMPLETED")}
               keyExtractor={item => item._id}
               contentContainerStyle={{ columnGap: 10 }}
               numColumns={3}
@@ -142,7 +142,11 @@ const HomeScreen = () => {
                 width: "100%",
               }}
               renderItem={({ item }) => (
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("Ketch", { ketchId: item._id })
+                  }}
+                >
                   <Image source={item.photo} style={{
                     width: width * 2 / 7,
                     height: width * 2 / 7,

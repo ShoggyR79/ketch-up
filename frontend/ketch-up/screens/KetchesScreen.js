@@ -21,16 +21,20 @@ const ketchType = ["SCHEDULED", "PLANNED", "COMPLETED", "CANCELED"]
 const data = [];
 
 
-const KetchesScreen = ({ navigation }) => {
+const KetchesScreen = ({ route, navigation }) => {
   const { user } = useAuth();
-  const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
+  let initialActive = route.params.initialActive
+  if (!initialActive) {
+    initialActive = "SCHEDULED"
+  }
+  const [activeKetchType, setActiveKetchType] = useState(initialActive);
   const [isEmpty, setIsEmpty] = useState(false);
   const [ketchList, setKetchList] = useState([])
 
   useEffect(() => {
     fetch(API_LINK + '/user/' + user).then((response) => response.json())
       .then((data) => setKetchList(data.message.ketches))
-  }, [user])
+  })
   return (
     <StyledSafeAreaView className='flex-1 bg-background' style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>
       <StyledView className='p-5'>
@@ -83,6 +87,7 @@ const KetchesScreen = ({ navigation }) => {
                   style={{
                     overflow: "scroll",
                   }}
+                  extraData={ketchList.filter(item => item.status === activeKetchType)}
                   renderItem={({ item }) => (
                     <View
                       style={{
@@ -109,9 +114,9 @@ const KetchesScreen = ({ navigation }) => {
                           <StyledText className='text-lg font-medium'>{item.name}</StyledText>
                           <StyledText>{item.deadline}</StyledText>
                           <StyledText className='text-dark-200'>with {
-                            item.users.filter(elem => elem != user).map(u => u.name).join(",").length > 30 ?
-                              item.users.filter(elem => elem != user).map(u => u.name).join(",").substr(0, 27) + "..." :
-                              item.users.filter(elem => elem != user).map(u => u.name).join(",")
+                            item.users.filter(elem => elem._id != user).map(u => u.name).join(",").length > 30 ?
+                              item.users.filter(elem => elem._id != user).map(u => u.name).join(",").substr(0, 27) + "..." :
+                              item.users.filter(elem => elem._id != user).map(u => u.name).join(",")
                           }</StyledText>
 
                         </StyledView>

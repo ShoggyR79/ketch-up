@@ -134,7 +134,7 @@ const SwipeActivityScreen = ({ route, navigation }) => {
                                         style={styles.cardShadow}>
                                         <View>
                                             <Text className="text-2xl font-bold mt-3 mb-3">{card.name}</Text>
-                                            <Text className="text-xl" style={{ overflow: "scroll" }}>{card.address}</Text>
+                                            <Text numberOfLines={2} ellipsizeMode='tail' className="text-xl">{card.address}</Text>
                                         </View>
                                     </View>
                                 </View>)

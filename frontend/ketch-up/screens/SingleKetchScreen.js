@@ -35,9 +35,8 @@ const SingleKetchScreen = ({ route, navigation }) => {
     const {ketchId} = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
     useEffect(()=>{
-        console.log(API_LINK + '/ketch/' + ketchId)
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-        .then((data) => {setKetch(data.message); console.log(data.message)})
+        .then((data) => {setKetch(data.message); })
     
     }, [ketchId])
     return (
@@ -163,7 +162,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
                 </StyledView>
 
-                <TouchableOpacity onPress={() => navigation.navigate("Swipe")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Swipe", {ketchId})}>
                     <View style={{
                         marginTop: 30,
                         height: 60,

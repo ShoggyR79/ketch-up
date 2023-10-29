@@ -1,6 +1,7 @@
 import { View, Text, Button, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import useAuth from '../hooks/useAuth.js';
 
 
 const { API_LINK } = require('../env.js')

@@ -30,12 +30,13 @@ const JoinKetchScreen = ({ navigation }) => {
             body: JSON.stringify({ joinCode, userId:user })
         })
         const data = await response.json()
+        console.log(data)
         if (response.status === 201) {
             // success
-            navigation.navigate("Ketch", { id: data })
-        } else {
+            navigation.navigate("Ketch", { id: data.message })
+        } else if (response.status === 400) {
             // handle error
-            setError(data)
+            setError(data.message)
         }
     }
     return (

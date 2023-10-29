@@ -32,19 +32,14 @@ const defaultKetch = {
 }
 
 const SingleKetchScreen = ({ route, navigation }) => {
-<<<<<<< HEAD
     const {ketchId} = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
     useEffect(()=>{
         console.log(API_LINK + '/ketch/' + ketchId)
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-        .then((ketchObject) => setKetch(ketchObject))
+        .then((data) => setKetch(data.message))
     
     }, [ketchId])
-=======
-    const { ketchId } = route.params
-    console.log(ketchId)
->>>>>>> 05946a8 (pre merge)
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{...AndroidStyles.droidSafeArea}}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{
@@ -82,26 +77,6 @@ const SingleKetchScreen = ({ route, navigation }) => {
                             justifyContent: "center",
                             backgroundColor: 
                         }}> */}
-<<<<<<< HEAD
-                        <StyledText className='mt-1 text-lg font-md text-grey'>Status: 
-                            {
-                                curKetch.status == "SCHEDULED" &&
-                                <StyledText className="text-ketchup-dark">{" " + curKetch.status}</StyledText>
-                            }
-                            {
-                                curKetch.status == "PLANNED" &&
-                                <StyledText className="text-yellow-500">{" " + curKetch.status}</StyledText>
-                            }
-                            {
-                                curKetch.status == "COMPLETED" &&
-                                <StyledText className="text-green-600">{" " + curKetch.status}</StyledText>  
-                            }
-                            {
-                                curKetch.status == "CANCELED" &&
-                                <StyledText className="text-red-600">{" " + curKetch.status}</StyledText>
-                            }
-                        </StyledText>
-=======
                         {/* <StyledView className='flex-row mt-2 justify-center items-center'> */}
                         {/* <StyledView className='border-2 p-2 border-dark-200 rounded-xl mx-1'> */}
                         <StyledView className='border-2 px-3 py-2 my-2 bg-accent-light border-dark-200 rounded-xl mx-1'>
@@ -113,7 +88,6 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
                         {/* </StyledView> */}
 
->>>>>>> 05946a8 (pre merge)
                         {/* </View> */}
 
                     </StyledView>

@@ -23,18 +23,20 @@ const RegisterScreen = () => {
     }
     // call register api
     // if sucessful -> handleLogin(email, password)
-    const signup = await fetch(API_LINK + '/user/signup', {
+    const response = await fetch(API_LINK + '/user/signup', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         name: name,
         email: email,
-        password: password 
+        password: password
       })
     })
-    handleLogin(email, password)
+    if (response.status === 201) {
+      handleLogin(email, password)
+    }
   }
 
   return (

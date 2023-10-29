@@ -29,7 +29,7 @@ const KetchesScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetch(API_LINK + '/user/' + user).then((response) => response.json())
-      .then((userObject) => setKetchList(userObject.ketches))
+      .then((data) => setKetchList(data.message.ketches))
   }, [user])
   return (
     <StyledSafeAreaView className='flex-1 bg-background' style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>

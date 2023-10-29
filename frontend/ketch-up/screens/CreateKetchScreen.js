@@ -10,12 +10,25 @@ const CreateKetchScreen = ({ navigation }) => {
   const [open, setOpen] = useState(false)
   const [location, setLocation] = useState("")
   const [error, setError] = useState("");
+  const {user} = useAuth()
   const onChange = (e, selectedDate) => {
     setDate(selectedDate);
     setOpen(false);
   };
   const createKetch = async () => {
-
+    const response = await fetch(API_LINK+"/ketch", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, deadline: date, location,  userId: user})
+    })
+    const data = await response.json()
+    if (data.status == 201){
+      navigation.navigate("Ketch", { id: data.message })
+    }else{
+      setError(data.message)
+    }
   }
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

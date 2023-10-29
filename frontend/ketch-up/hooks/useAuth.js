@@ -50,10 +50,10 @@ export const AuthProvider = ({ children }) => {
             console.log(data)
             setUser(data)
             storeId(data) // store to localHost
-            return { status: 'success', userId: data }
+            return { status: 'success', userId: data.message }
         } else {
             // handle error
-            return { status: 'error', message: data }
+            return { status: 'error', message: data.message }
         }
     }
 

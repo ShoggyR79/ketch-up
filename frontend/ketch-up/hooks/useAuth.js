@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
             await AsyncStorage.setItem('userId', id);
         } catch (e) {
             // saving error
+            console.log("error")
         }
     };
 
@@ -18,9 +19,13 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         AsyncStorage.getItem('userId').then((value) => {
+            console.log("grabbed " + value)
             setUser(value);
+        }).catch((error) => {
+            console.log(error)
         })
     }, [])
+    
     const handleLogout = async () => {
         await AsyncStorage.removeItem('userId');
         setUser(null)
@@ -28,9 +33,8 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async (email, password) => {
         // call api to login
+        await fetch(API_LINK + '/')
         console.log(API_LINK + '/user/login')
-        const response1 = await fetch(API_LINK)
-        console.log(response1)
         const response = await fetch(API_LINK + '/user/login', {
             method: 'POST',
             headers: {
@@ -41,6 +45,7 @@ export const AuthProvider = ({ children }) => {
         console.log("return")
         // 200 successful, 400 incorrect
         const data = await response.json()
+        // console.log(data)
         if (response.status === 201) {
             console.log(data)
             setUser(data)

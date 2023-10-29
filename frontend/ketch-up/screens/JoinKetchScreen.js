@@ -5,6 +5,7 @@ import colors from "../styles"
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import useAuth from '../hooks/useAuth';
 
 
 const StyledText = styled(Text);
@@ -15,6 +16,7 @@ const { API_LINK } = require('../env.js')
 const JoinKetchScreen = ({ navigation }) => {
     const [joinCode, setJoinCode] = React.useState("");
     const [error, setError] = React.useState("");
+    const {user} = useAuth()
     const joinKetch = async () => {
         // need to be 6 alphanumeric characters
         if (joinCode.length !== 6) {
@@ -25,7 +27,7 @@ const JoinKetchScreen = ({ navigation }) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ joinCode })
+            body: JSON.stringify({ joinCode, userId:user })
         })
         const data = await response.json()
         if (response.status === 201) {
@@ -51,7 +53,7 @@ const JoinKetchScreen = ({ navigation }) => {
                 <FontAwesome5 name="chevron-down" size={24} color="black" />
             </StyledTouchable>
             <Text style={{ color: "gray", marginTop: 50 }}>{error}</Text>
-            <StyledText className='text-2xl font-semibold tracking-wider mb-5'>type code</StyledText>
+            <StyledText className='text-2xl font-semibold tracking-wider mb-5'>6 Digit Code</StyledText>
 
             <StyledView className='flex-row items-center'>
                 <TextInput
@@ -63,7 +65,6 @@ const JoinKetchScreen = ({ navigation }) => {
                         padding: 10,
                         backgroundColor: colors.dark[100],
                         borderRadius: 20,
-                        padding: 20,
                         color: colors.dark[300],
 
                     }}

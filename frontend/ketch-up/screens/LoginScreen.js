@@ -13,9 +13,6 @@ const LoginScreen = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const login = async (email, password) => {
-        const test = await fetch('http://10.76.79.21:5000/')
-        const data = await test.json()
-        console.log(data)
         const response = await handleLogin(email, password)
         if (response.status === 'error') {
             setError(response.message)
@@ -55,7 +52,7 @@ const LoginScreen = ({navigation}) => {
                         onChangeText={setPassword}
                         placeholder="Password"/>
                     <TouchableOpacity
-                        onPress={() => login(email, password)}
+                        onPress={async () => await login(email, password)}
                         className="py-3 bg-accent-std rounded-xl">
                         <Text className="font-xl font-bold text-center text-gray-700">
                             Login

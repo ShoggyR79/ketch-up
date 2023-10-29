@@ -33,12 +33,26 @@ const LoginScreen = ({ navigation }) => {
                         {/* <ArrowLeftIcon size="20" color="black" /> */}
                     </TouchableOpacity>
                 </View>
-                <View className="flex-row justify-center">
+                {/* <View className="flex-row justify-center">
                     <Image source={require('../assets/icons/icon3.png')}
                         style={{ width: 200, height: 200, alignSelf: "center", justifyContent: "center" }} />
-                </View>
+                </View> */}
+                {/* <View style={{ justifyContent: "end", alignItems: "flex-end", position: "absolute", zIndex: "1" }}>
+                    <Image style={{
+                        width: 150,
+                        height: 150,
+                    }}
+                        source={require('../assets/icons/tomato-sauce.png')} />
+                </View> */}
             </SafeAreaView>
-            <View className="flex-1 bg-background px-8 pt-8"
+            <View style={{ position: "absolute", zIndex: "1", top: 70, right: 40 }}>
+                <Image style={{
+                    width: 150,
+                    height: 150,
+                }}
+                    source={require('../assets/icons/ketchup.png')} />
+            </View>
+            <View className="flex-1 bg-background px-8 pt-8 mt-20"
                 style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}>
                 <View className="form space-y-2">
                     <Text style={{ color: "red" }}>{error}</Text>

@@ -1,48 +1,68 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native'
-import {Image} from 'expo-image'
-import {React, useRef, useState} from 'react'
-import {useNavigation} from '@react-navigation/native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
+import { React, useRef, useState, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import Swiper from "react-native-deck-swiper"
-import {styled} from "nativewind"
+import { styled } from "nativewind"
 import colors from "../styles";
 import * as string_decoder from "string_decoder";
-import {Entypo, AntDesign} from "@expo/vector-icons";
-import {position} from "nativewind/dist/postcss/to-react-native/properties/position";
+import { Entypo, AntDesign } from "@expo/vector-icons";
+import { API_LINK } from '../env'
+import useAuth from '../hooks/useAuth';
 
-const StyledTouchable = styled(TouchableOpacity)
-
-const DUMMY_DATA = [
-    {
-        name: 'Touch Grass',
-        pic: 'https://media.istockphoto.com/id/1349781282/photo/human-palm-touching-lawn-grass-low-angle-view.jpg?s=612x612&w=0&k=20&c=SPV9QmWhfdk1D1QXNPzZaYbHnaO5CEZpUmRDoEJjTpw=',
-        address: 'Alumni Lawn',
-        id: 1
-    },
-    {
-        name: 'Get Boba',
-        pic: 'https://images.pexels.com/photos/6412837/pexels-photo-6412837.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        address: 'Sweet Dots',
-        id: 2
-    },
-    {
-        name: 'Touch Grassier Grass',
-        pic: 'https://i.pinimg.com/originals/b6/e5/eb/b6e5ebb4d04abc63772d43d4e827c120.png',
-        address: 'Centennial Park',
-        id: 3
-    },
-    {
-        name: 'Get Dumpy Dumplings',
-        pic: 'https://st2.depositphotos.com/2252541/6847/i/450/depositphotos_68475787-stock-photo-dim-sum.jpg',
-        address: 'Dumpling House',
-        id: 4
-    }
-]
+const StyledSafeArea = styled(SafeAreaView),
 
 
-const SwipeActivityScreen = ({navigation}) => {
+const DUMMY_DATA =
+    [
+        {
+            "address": "7A Thu Khoa Huan, Ward, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh 70010, Vietnam",
+            "id": "k6vn2xkf2g",
+            "name": "awefwaefaw estaurant & Bar",
+            "pic": "https://maps.googleapis.com/maps/api/place/photo?photoreference=AcJnMuG6q3z0kG0wL0rD9qCL98AK4MZZwlbnmGFVIl4jEUKAE-DkhoCLleKnJrAZ7C3ZsagrLdwj_PSoS00hiqWj9VIZk7rbcvPMaNfnUkbPpiPpw03o-dfnSYZctQmfTVruHnyk3oxQl5ezb3J0jYiXYclTFw8Sd93Kuh9W&sensor=false&maxheight=1365&maxwidth=2048&key=AIzaSyBAWSSsDlRFHA5iEawa6CuGFY357LxKbfE",
+            "votes": [
+            ]
+        },
+        {
+            "address": "158 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh 70000, Vietnam",
+            "id": "1pkqoieuo",
+            "name": "awefwefn Restaurant",
+            "pic": "https://maps.googleapis.com/maps/api/place/photo?photoreference=AcJnMuGYtk0SF3pkL4r1x_s--mywTXosnz2cBqCe3LvxMJwBRYs4gVolqmyqxdBW7Flqr9r3NASSjL2PL4fmAg3z6cBWlhHLczTB_ELy9Txi43pWcPRxZD8yXBD4rkTq6_Emg19p53A71OcQ1LxewHPfA-sP5fE2UGrL8Nb5&sensor=false&maxheight=3024&maxwidth=4032&key=AIzaSyBAWSSsDlRFHA5iEawa6CuGFY357LxKbfE",
+            "votes": [
+            ]
+        }
+    ]
+
+
+const SwipeActivityScreen = ({ route, navigation }) => {
+    const { ketchId } = route.params
+    const { user } = useAuth()
     const swipeRef = useRef(null)
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [activities, setActivities] = useState([])
+    const [stackSize, setStackSize] = useState(2)
+    const [stackIndex, setStackIndex] = useState(0)
+    useEffect(() => {
+        fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
+            .then((data) => {
+                let temp = []
+                for (const id in data.message.preference) {
+                    const obj = data.message.preference[id]
+                    if (obj && !obj.votes.find((vote) => vote == user) && !obj.voteNo.find((vote) => vote == user)) {
+                        const activity = {
+                            id,
+                            ...obj
+                        }
+                        temp.push(activity)
+                    }
+                }
+                setStackSize(temp.length)
+                setStackIndex(0);
+                setActivities(temp)
+            })
+            .catch((error) => console.error(error))
+    }, [ketchId])
+
     return (
         <SafeAreaView className="flex-1">
             <TouchableOpacity
@@ -50,81 +70,106 @@ const SwipeActivityScreen = ({navigation}) => {
                     navigation.goBack()
                 }}
                 className="mt-6 mr-4 self-end items-center justify-center rounded-full w-20 h-20 bg-ketchup-light border-dark-300 border-2">
-                <Entypo name={"cross"} size={40} color="black"/>
+                <Entypo name={"cross"} size={40} color="black" />
             </TouchableOpacity>
-            {/*</View>*/}
-            <View className="flex-1 -mt-6">
-                {currentIndex < DUMMY_DATA.length ? (
-                <Swiper
-                    ref={swipeRef}
-                    containerStyle={{backgroundColor: "transparent"}}
-                    cards={DUMMY_DATA}
-                    stackSize={DUMMY_DATA.length}
-                    cardIndex={0}
-                    animateCardOpacity
-                    verticalSwipe={false}
-                    onSwipedLeft={() => {
-                        console.log('Swipe PASS')
-                        setCurrentIndex(currentIndex + 1)
-                    }}
-                    onSwipedRight={() => {
-                        console.log('Swipe MATCH')
-                        setCurrentIndex(currentIndex + 1)
-                    }}
-                    overlayLabels={{
-                        left: {
-                            title: "NAHH",
-                            style: {
-                                label: {
-                                    textAlign: "right",
-                                    color: "red",
+            <StyledSafeArea className="flex-1 mt-6 top-10">
+                {activities.length > 0 &&
+                    stackIndex < activities.length &&
+                    <Swiper
+                        containerStyle={{ backgroundColor: "transparent" }}
+                        cards={activities}
+                        stackSize={stackSize}
+                        cardIndex={stackIndex}
+                        animateCardOpacity
+                        verticalSwipe={false}
+                        onSwipedLeft={async (cardIndex) => {
+                            console.log('Swipe PASS')
+                            const card = activities[cardIndex]
+                            const response = await fetch(API_LINK + "/ketch/swipe", {
+                                method: "PUT",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    hangoutId: card.id,
+                                    userId: user,
+                                    dir: "left"
+                                })
+                            })
+                        }}
+                        onSwipedRight={async (cardIndex) => {
+                            console.log('Swipe MATCH')
+                            const card = activities[cardIndex]
+                            const response = await fetch(API_LINK + "/ketch/swipe", {
+                                method: "PUT",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    hangoutId: card.id,
+                                    userId: user,
+                                    dir: "right",
+                                    ketchId
+                                })
+                            })
+                            // const data = await response.json()
+                            // if(data.status == 400){
+
+                            // }
+                        }}
+                        overlayLabels={{
+                            left: {
+                                title: "NAHH",
+                                style: {
+                                    label: {
+                                        textAlign: "right",
+                                        color: "red",
+                                    },
                                 },
                             },
-                        },
-                        right: {
-                            title: "YESSS",
-                            style: {
-                                label: {
-                                    color: "#4DED30"
+                            right: {
+                                title: "YESSS",
+                                style: {
+                                    label: {
+                                        color: "#4DED30"
+                                    }
                                 }
                             }
+                        }}
+                        renderCard={(card) => {
+                            return (
+                                <View key={card.id} className="relative bg-accent-std h-3/4 rounded-xl">
+                                    <Image
+                                        source={{ uri: card.pic }}
+                                        className="absolute top-0 h-full w-full rounded-xl"
+                                    />
+                                    <View
+                                        className="absolute bottom-0 bg-orange-100 w-full flex-row justify-start items-center h-40 px-6 py-2 rounded-b"
+                                        style={styles.cardShadow}>
+                                        <View>
+                                            <Text className="text-2xl font-bold mt-3 mb-3">{card.name}</Text>
+                                            <Text className="text-xl" style={{ overflow: "scroll" }}>{card.address}</Text>
+                                        </View>
+                                    </View>
+                                </View>)
                         }
-                    }}
-                    renderCard={(card) => (
-                        <View key={card.id} className="relative mt-6 bg-accent-std h-3/4 rounded-xl">
-                            <Image
-                                source={{uri: card.pic}}
-                                className="absolute top-0 h-full w-full rounded-xl"
-                            />
-                            <View
-                                className="absolute bottom-0 bg-orange-100 w-full flex-row justify-start items-center h-40 px-6 py-2 rounded-b"
-                                style={styles.cardShadow}>
-                                <View>
-                                    <Text className="text-2xl font-bold mt-3 mb-3">{card.name}</Text>
-                                    <Text className="text-xl">{card.address}</Text>
-                                </View>
-                            </View>
-                        </View>)
-                    }
-                />) : (
-                    <View className="flex-1">
-                        <Text className="justify-center items-center self-center mt-80 flex-1 font-bold text-2xl text-ketchup-light">No more options left to swipe!!</Text>
-                    </View>
-                )}
-            </View>
+                        }
+                    />
+                }
+
+            </StyledSafeArea>
             <View className="flex flex-row justify-evenly">
                 <TouchableOpacity
-                    disabled={currentIndex >= DUMMY_DATA.length}
                     onPress={() => swipeRef.current.swipeLeft()}
                     className="items-center justify-center rounded-full w-16 h-16 bg-red-200">
-                    <Entypo name={"cross"} size={24} color="#8C1926"/>
+                    <Entypo name={"cross"} size={24} color="#8C1926" />
                 </TouchableOpacity>
 
+
                 <TouchableOpacity
-                    disabled={currentIndex >= DUMMY_DATA.length}
                     onPress={() => swipeRef.current.swipeRight()}
                     className="items-center justify-center rounded-full w-16 h-16 bg-green-200">
-                    <AntDesign name={"heart"} size={24} color="green"/>
+                    <AntDesign name={"heart"} size={24} color="green" />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

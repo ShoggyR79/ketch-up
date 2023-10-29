@@ -59,7 +59,7 @@ const ModalKetch = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.goBack()} >
-            <StyledText className='text-lg self-center mt-5 font-md text-blue-500'>another time</StyledText>
+            <StyledText className='text-lg font-semibold self-center mt-8 font-md text-ketchup-dark'>another time</StyledText>
           </TouchableOpacity>
         </View>
       </View>

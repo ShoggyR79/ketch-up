@@ -85,7 +85,8 @@ const SingleKetchScreen = ({ route, navigation }) => {
             .then((data) => { setKetch(data.message);})
     }, [ketchId])
     return (
-        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
+        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-lighter' style={{ ...AndroidStyles.droidSafeArea }}>
+            {/* <StyledView className='flex-1'> */}
             <TouchableOpacity onPress={() => navigation.goBack()} style={{
                 position: "absolute",
                 top: 60,
@@ -270,6 +271,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
 
         </StyledSafeAreaView >
+        // </StyledView>
     )
 }
 

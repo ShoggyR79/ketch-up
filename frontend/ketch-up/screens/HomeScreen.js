@@ -77,8 +77,8 @@ const HomeScreen = () => {
           </Image>
           <TouchableOpacity style={{
             position: "absolute",
-            right: 15,
-            top: -30,
+            right: 20,
+            top: -130,
             // borderWidth: 1,
             // borderColor: colors.light,
             padding: 15,
@@ -102,6 +102,7 @@ const HomeScreen = () => {
           }}>
             {name}
           </Text>
+
           <StyledView className='flex-row w-100 h-16 mt-2 items-center justify-around'>
             <StyledView className='items-center'>
 

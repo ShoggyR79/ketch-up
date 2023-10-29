@@ -49,7 +49,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
         if (!result.canceled) {
@@ -79,7 +79,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
             if (response.status === 201) {
                 const data = await response.json()
                 // console.log(data.message)
-                setKetch(data.message)
+                // navigation.navigate("Ketches", {initialActive:"COMPLETED"})
             }
             setVisible(false)
         }
@@ -91,7 +91,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
     useEffect(() => {
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
             .then((data) => { setKetch(data.message); })
-    }, [ketchId])
+    })
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
             <AnimatedLoader
@@ -144,7 +144,18 @@ const SingleKetchScreen = ({ route, navigation }) => {
                         <StyledView className='border-2 px-3 py-2 my-2 bg-accent-light border-dark-200 rounded-xl mx-1'>
                             <StyledText className='mt-1 text-2xl font-semibold text-dark-300 '>Code: {curKetch.joincode}</StyledText>
                         </StyledView>
-                        <StyledText className=' text-md font-semibold text-ketchup-dark'>{curKetch.status}</StyledText>
+                        {
+                            curKetch.status === "SCHEDULED" &&
+                            <StyledText className=' text-md font-semibold text-ketchup-dark'>{curKetch.status}</StyledText>
+                        }
+                        {
+                            curKetch.status === "PLANNED" &&
+                            <StyledText className=' text-md font-semibold text-yellow-500'>{curKetch.status}</StyledText>
+                        }
+                        {
+                            curKetch.status === "COMPLETED" &&
+                            <StyledText className=' text-md font-semibold text-green-500'>{curKetch.status}</StyledText>
+                        }
                         {/* </StyledView> */}
 
 
@@ -195,7 +206,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
                                                 })
                                             })
                                             if (response.status === 201) {
-                                                navigation.navigate("Ketches", {initalActive:"PLANNED"})
+                                                // navigation.navigate("Ketches", {initialActive:"PLANNED"})
                                             } else {
 
                                             }
@@ -267,7 +278,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
                             // marginTop: 30,
                             height: 60,
                             backgroundColor: colors.accent.std,
-                            width: "80%",
+                            width: user === curKetch? "80%" : "100%",
                             alignSelf: "center",
                             justifyContent: "center",
                             alignItems: "center",
@@ -309,7 +320,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
                             // marginTop: 30,
                             height: 60,
                             backgroundColor: colors.accent.std,
-                            width: "80%",
+                            width: curKetch.creator == user ?"80%": "100%",
                             alignSelf: "center",
                             justifyContent: "center",
                             alignItems: "center",
@@ -352,6 +363,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
 
         </StyledSafeAreaView >
+        // </StyledView>
     )
 }
 

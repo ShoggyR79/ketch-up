@@ -113,11 +113,11 @@ const KetchesScreen = ({ route, navigation }) => {
                         <StyledView className='ml-5 justify-around'>
                           <StyledText className='text-lg font-medium'>{item.name}</StyledText>
                           <StyledText>{item.deadline}</StyledText>
-                          <StyledText className='text-dark-200'>with {
+                          {/* <StyledText className='text-dark-200'>with {
                             item.users.filter(elem => elem._id != user).map(u => u.name).join(",").length > 30 ?
                               item.users.filter(elem => elem._id != user).map(u => u.name).join(",").substr(0, 27) + "..." :
                               item.users.filter(elem => elem._id != user).map(u => u.name).join(",")
-                          }</StyledText>
+                          }</StyledText> */}
 
                         </StyledView>
                       </StyledView>

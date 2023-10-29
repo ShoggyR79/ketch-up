@@ -81,7 +81,7 @@ const Tabbar = () => {
         })}
       />
 
-      <Tab.Screen name="Ketches" component={KetchesScreen} options={{
+      <Tab.Screen name="Ketches" component={KetchesScreen} initialParams={{initialActive:"SCHEDULED"}} options={{
         // tabBarLabel: 'Home',
         tabBarIcon: ({ focused }) => (
           <View style={{ alignItems: "center", justifyContent: "center", top: 10 }}>

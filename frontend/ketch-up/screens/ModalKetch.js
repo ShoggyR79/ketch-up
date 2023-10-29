@@ -24,7 +24,7 @@ const ModalKetch = ({ navigation }) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'start',
-        top: 100,
+        top: 60,
         backgroundColor: colors.background
       }}>
         <Text style={{ fontSize: 30, fontWeight: "600", color: colors.ketchup.dark }}>ready to ketch'up?</Text>
@@ -39,9 +39,10 @@ const ModalKetch = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: 200,
+            backgroundColor: colors.accent.light,
 
           }} onPress={() => navigation.navigate("Create")} title="Create Ketch">
-            <StyledText className='font-semibold text-lg'>Create Ketch</StyledText>
+            <StyledText className='font-semibold text-lg '>Create Ketch</StyledText>
           </TouchableOpacity>
           <StyledText className='self-center my-5 text-2xl'>or</StyledText>
 
@@ -53,13 +54,14 @@ const ModalKetch = ({ navigation }) => {
             alignItems: 'center',
             justifyContent: 'center',
             width: 200,
+            backgroundColor: colors.accent.light,
 
           }} onPress={() => navigation.navigate("Join")}>
             <StyledText className='font-semibold text-lg'>Join Ketch</StyledText>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.goBack()} >
-            <StyledText className='text-lg self-center mt-5 font-md text-blue-500'>another time</StyledText>
+            <StyledText className='text-lg font-md self-center mt-8 font-md text-ketchup-dark'>another time</StyledText>
           </TouchableOpacity>
         </View>
       </View>

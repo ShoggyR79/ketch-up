@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
             console.log(error)
         })
     }, [])
-    
+
     const handleLogout = async () => {
         await AsyncStorage.removeItem('userId');
         setUser(null)
@@ -48,8 +48,8 @@ export const AuthProvider = ({ children }) => {
         // console.log(data)
         if (response.status === 201) {
             console.log(data)
-            setUser(data)
-            storeId(data) // store to localHost
+            setUser(data.message)
+            storeId(data.message) // store to localHost
             return { status: 'success', userId: data.message }
         } else {
             // handle error

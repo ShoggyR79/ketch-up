@@ -38,7 +38,7 @@ const HomeScreen = ({navigation}) => {
         setKetchList(data.message.ketches)
       })
       .catch((error) => console.error(error))
-  }, [user])
+  })
 
   return (
     <StyledSafeAreaView className="flex-1 bg-background" style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>
@@ -77,8 +77,8 @@ const HomeScreen = ({navigation}) => {
           </Image>
           <TouchableOpacity style={{
             position: "absolute",
-            right: 15,
-            top: -30,
+            right: 20,
+            top: -130,
             // borderWidth: 1,
             // borderColor: colors.light,
             padding: 15,
@@ -102,6 +102,7 @@ const HomeScreen = ({navigation}) => {
           }}>
             {name}
           </Text>
+
           <StyledView className='flex-row w-100 h-16 mt-2 items-center justify-around'>
             <StyledView className='items-center'>
 

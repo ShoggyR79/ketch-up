@@ -12,8 +12,10 @@ import { API_LINK } from '../env'
 import useAuth from '../hooks/useAuth';
 
 
-const DUMMY_DATA =
-    []
+
+const DUMMY_DATA = []
+
+const StyledSafeArea = styled(SafeAreaView)
 
 
 const SwipeActivityScreen = ({ route, navigation }) => {
@@ -149,7 +151,7 @@ const SwipeActivityScreen = ({ route, navigation }) => {
                 }
 
             </View>
-            <View className="flex flex-row justify-evenly">
+            {/* <View className="flex flex-row justify-evenly">
                 <TouchableOpacity
                     onPress={() => swipeRef.current.swipeLeft()}
                     className="items-center justify-center rounded-full w-16 h-16 bg-red-200">
@@ -162,7 +164,7 @@ const SwipeActivityScreen = ({ route, navigation }) => {
                     className="items-center justify-center rounded-full w-16 h-16 bg-green-200">
                     <AntDesign name={"heart"} size={24} color="green" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }

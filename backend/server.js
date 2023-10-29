@@ -21,7 +21,7 @@ const s3 = new aws.S3({
 const upload = multer({
     storage: multerS3({
         s3,
-        bucket: process.env.AWS_BUCKET,
+        bucket: "ketch-up-vandyhacks",
         acl: 'public-read',
         metadata(req, file, cb) {
         cb(null, {fieldName: file.fieldname});
@@ -44,7 +44,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // user signup
 app.post('/user/signup', async (req, res) => {
-    findUser = null
+    let findUser = null
     try{
         findUser = await userSchema.findOne({
             email: req.body.email
@@ -56,8 +56,7 @@ app.post('/user/signup', async (req, res) => {
         res.status(400).send({message: "User already exists"})
         return
     }
-    hexColors = ["E8E09A","A4DCB9","5BCEBF","83E2E5","738CD1"]
-    user = new userSchema({
+    let user = new userSchema({
         name: req.body.name,
         email: req.body.email,
         icon: "",
@@ -67,7 +66,7 @@ app.post('/user/signup', async (req, res) => {
         ketches: [],
         notification: []
     })
-    icon = `https://source.boringavatars.com/beam/120/${user._doc._id}?colors=E8E09A,A4DCB9,5BCEBF,83E2E5,738CD1`
+    let icon = `https://source.boringavatars.com/beam/120/${user._doc._id}?colors=E8E09A,A4DCB9,5BCEBF,83E2E5,738CD1`
     user._doc.icon = icon
     user.setPassword(req.body.password)
     await user.save()
@@ -76,7 +75,7 @@ app.post('/user/signup', async (req, res) => {
 
 // used for authentication
 app.post('/user/login', async (req, res) => {
-    user = null
+    let user = null
     try{
         user = await userSchema.findOne({
             email: req.body.email
@@ -85,19 +84,19 @@ app.post('/user/login', async (req, res) => {
         
     }
     if (user === null){
-        res.status(400).send({message: "Incorrect username or password"})
+        res.status(400).send("Incorrect username or password")
         return
     }
     if (user.authenticate(req.body.password)){
-        res.status(201).send({userId: user._doc._id, message: "OK"})
+        res.status(201).send(user._doc._id)
     }else{
-        res.status(400).send({message: "Incorrect username or password"})
+        res.status(400).send("Incorrect username or password")
     }
 });
 
 // get user, provided user id
 app.get('/user', async (req, res) => {
-    user = null
+    let user = null
     try{
         user = await userSchema.findOne({
             _id: req.body.id
@@ -109,7 +108,7 @@ app.get('/user', async (req, res) => {
         res.status(400).send({message: "Cannot get user"})
         return
     }
-    ketches = []
+    let ketches = []
     for(const ketchid of user._doc.ketches){
         ketch = await ketchSchema.findOne({
             _id: ketchid
@@ -124,19 +123,61 @@ app.get('/user', async (req, res) => {
     res.status(200).send({...user._doc, message: "OK"})
 });
 
+const generateHangouts = async (location) => {
+    let query = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Goog-Api-Key': 'AIzaSyBAWSSsDlRFHA5iEawa6CuGFY357LxKbfE',
+            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos'
+        },
+        body: JSON.stringify({
+            'textQuery': `Fun activities or restaurants in ${location}`,
+            'language_code': 'en'
+        })
+    });
+    query = await query.json()
+    hangouts = []
+    for(let i=0;i<Math.min(10, query.places.length);++i){
+        let place = query.places[i]
+        let h = {
+            name: place.displayName.text,
+            address: place.formattedAddress,
+            id: (Math.random()*10).toString(36).substring(2)
+        }
+        let resource = place.photos[0].name
+        resource = resource.substring(resource.lastIndexOf("/")+1)
+        let height = place.photos[0].heightPx
+        let width = place.photos[0].widthPx
+        let url = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${resource}&sensor=false&maxheight=${height}&maxwidth=${width}&key=AIzaSyBAWSSsDlRFHA5iEawa6CuGFY357LxKbfE`
+        h.pic = url
+        hangouts.push(h)
+    }
+    // shuffle
+    hangouts = hangouts
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+    return hangouts
+}
+
+app.get('/', async(req, res) => {
+    res.send("Hello")
+})
 // create ketch
 app.post('/ketch', async (req, res) => {
-    joincode = (Math.random()*6).toString(36)
-    hangouts = await hangoutSchema.find()
-    preference = {}
+    let joincode = (Math.random()*6).toString(36).substring(2,8).toUpperCase()
+    let hangouts = await generateHangouts(req.body.location)
+    let preference = {}
     for(const h of hangouts){
-        preference[h._doc._id] = {
-            name: h._doc.name,
-            pic: h._doc.pic,
+        preference[h.id] = {
+            name: h.name,
+            pic: h.pic,
+            address: h.address,
             votes: []
         }
     }
-    user = null
+    let user = null
     try{
         user = await userSchema.findOne({
             _id: req.body.userId
@@ -149,7 +190,7 @@ app.post('/ketch', async (req, res) => {
         res.status(400).send("User not found")
         return
     }
-    ketch = new ketchSchema({
+    let ketch = new ketchSchema({
         name: req.body.name,
         creator: req.body.userId,
         status: "SCHEDULED",
@@ -183,7 +224,7 @@ app.post('/ketch', async (req, res) => {
 
 // get ketch
 app.get('/ketch', async (req, res) => {
-    ketch = null
+    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId
@@ -202,7 +243,7 @@ app.get('/ketch', async (req, res) => {
 // join ketch
 // TODO: client needs to connect to websocket
 app.put('/ketch/join', async (req, res) => {
-    ketch = null
+    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             joincode: req.body.joinCode
@@ -249,7 +290,7 @@ app.put('/ketch/join', async (req, res) => {
 
 // update ketch when swiping
 app.put('/ketch/swipe', async (req, res) => {
-    ketch = null
+    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId
@@ -294,7 +335,7 @@ app.put('/ketch/swipe', async (req, res) => {
 // plan the sketch (complete the planning phase)
 // TODO: multicast message to websockets
 app.put('/ketch/plan', async (req, res) => {
-    ketch = null
+    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId
@@ -310,8 +351,8 @@ app.put('/ketch/plan', async (req, res) => {
         res.status(400).send({message: "Incorrect ketch status"})
         return
     }
-    preference = ketch._doc.preference
-    activity = Object.keys(preference).map(elem => [preference[elem].length, elem]).sort().reverse()[0][1]
+    let preference = ketch._doc.preference
+    let activity = Object.keys(preference).map(elem => [preference[elem].length, elem]).sort().reverse()[0][1]
     await ketchSchema.updateOne({
         _id: req.body.ketchId
     },{
@@ -319,7 +360,8 @@ app.put('/ketch/plan', async (req, res) => {
             status: "PLANNED",
             activity: {
                 name: preference[activity].name,
-                pic: preference[activity].pic
+                pic: preference[activity].pic,
+                address: preference[activity].address
             }
         }
     })
@@ -328,7 +370,7 @@ app.put('/ketch/plan', async (req, res) => {
 
 // complete the ketch (upload photo)
 app.post('/ketch/complete', upload.single('photo'), async (req, res) => {
-    ketch = null
+    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId

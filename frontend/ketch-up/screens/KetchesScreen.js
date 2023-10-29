@@ -34,7 +34,7 @@ const KetchesScreen = () => {
     <StyledSafeAreaView className='flex-1 bg-background' style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>
       <StyledView className='p-5'>
         <StyledView>
-          <StyledText className='font-semibold text-xl'>manage my ketches</StyledText>
+          <StyledText className='font-semibold text-2xl'>manage my ketches</StyledText>
 
           {/* filter */}
           <View>

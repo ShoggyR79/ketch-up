@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
         required: true
     },
     photo: {
-        type: Number,
+        type: String,
         required: true
     },
     joincode: {

@@ -13,6 +13,9 @@ const LoginScreen = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const login = async (email, password) => {
+        const test = await fetch('http://10.76.79.21:5000/')
+        const data = await test.json()
+        console.log(data)
         const response = await handleLogin(email, password)
         if (response.status === 'error') {
             setError(response.message)

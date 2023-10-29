@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.getItem('userId').then((value) => {
             setUser(value);
         })
-    }, [user])
+    }, [])
     const handleLogout = async () => {
         await AsyncStorage.removeItem('userId');
         setUser(null)
@@ -28,7 +28,9 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async (email, password) => {
         // call api to login
-        // console.log(API_LINK + '/user/login')
+        console.log(API_LINK + '/user/login')
+        const response1 = await fetch(API_LINK)
+        console.log(response1)
         const response = await fetch(API_LINK + '/user/login', {
             method: 'POST',
             headers: {

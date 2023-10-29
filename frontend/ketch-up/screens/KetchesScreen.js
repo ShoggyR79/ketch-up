@@ -1,5 +1,6 @@
-import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { Image } from 'expo-image'
 import { SafeAreaView } from 'react-native'
 import { styled } from 'nativewind';
 import colors from "../styles";
@@ -16,7 +17,7 @@ const StyledSafeAreaView = styled(SafeAreaView);
 const StyledText = styled(Text);
 const StyledView = styled(View);
 
-const ketchType = ["SCHEDULED", "PLANNING", "COMPLETED", "CANCELED"]
+const ketchType = ["SCHEDULED", "PLANNED", "COMPLETED", "CANCELED"]
 const data = [];
 
 
@@ -77,7 +78,7 @@ const KetchesScreen = ({navigation}) => {
             ) :
               <View style={{height:'88%'}}>
                 <FlatList
-                  data={ketchList}
+                  data={ketchList.filter(item => item.status === activeKetchType)}
                   keyExtractor={item => item._id}
                   style={{
                     overflow: "scroll",
@@ -96,9 +97,9 @@ const KetchesScreen = ({navigation}) => {
 
                       }}>
                       <StyledView className='flex-row'>
-                        <Image source={require("../assets/pfp_test.jpeg")}
+                        <Image source={item.photo}
                           style={{
-                            resizeMode: "contain",
+                            contentFit: "contain",
                             height: 80,
                             width: 80,
                             borderRadius: 999,

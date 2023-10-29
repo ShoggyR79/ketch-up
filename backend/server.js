@@ -95,11 +95,11 @@ app.post('/user/login', async (req, res) => {
 });
 
 // get user, provided user id
-app.get('/user', async (req, res) => {
+app.get('/user/:userId', async (req, res) => {
     let user = null
     try{
         user = await userSchema.findOne({
-            _id: req.body.id
+            _id: req.params.userId
         })
     }catch(err){
         
@@ -110,9 +110,15 @@ app.get('/user', async (req, res) => {
     }
     let ketches = []
     for(const ketchid of user._doc.ketches){
-        ketch = await ketchSchema.findOne({
-            _id: ketchid
-        })
+        let ketch = null
+        try{
+            ketch = await ketchSchema.findOne({
+                _id: ketchid
+            })
+        }catch(err){
+
+        }
+        
         if(ketch === null){
             res.status(400).send("Error getting sketch")
             return
@@ -120,6 +126,7 @@ app.get('/user', async (req, res) => {
         ketches.push(ketch._doc)
     }
     user._doc.ketches = ketches
+    console.log(user._doc.ketches)
     res.status(200).send({...user._doc, message: "OK"})
 });
 
@@ -227,7 +234,7 @@ app.get('/ketch', async (req, res) => {
     let ketch = null
     try{
         ketch = await ketchSchema.findOne({
-            _id: req.body.ketchId
+            _id: req.params.ketchId
         })
     }catch(err){
         
@@ -237,6 +244,25 @@ app.get('/ketch', async (req, res) => {
         res.status(400).send({message: "Ketch not found"})
         return
     }
+
+    let users = []
+    for(const userId of ketch._doc.users){
+        user = null
+        try{
+            user = await userSchema.findOne({
+                _id: userId
+            })
+        }catch(err){
+
+        }
+        
+        if(user === null){
+            res.status(400).send("Error getting user")
+            return
+        }
+        users.push(user._doc)
+    }
+    ketch._doc.users = users
     res.status(200).send({...ketch._doc, message: "OK"})
 });
 

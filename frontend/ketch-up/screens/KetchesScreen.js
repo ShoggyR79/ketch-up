@@ -21,7 +21,7 @@ const ketchType = ["SCHEDULED", "PLANNED", "COMPLETED", "CANCELED"]
 const data = [];
 
 
-const KetchesScreen = ({navigation}) => {
+const KetchesScreen = ({ navigation }) => {
   const { user } = useAuth();
   const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
   const [isEmpty, setIsEmpty] = useState(false);
@@ -76,7 +76,7 @@ const KetchesScreen = ({navigation}) => {
             {isEmpty ? (
               <Text>nothing to see here!</Text>
             ) :
-              <View style={{height:'88%'}}>
+              <View style={{ height: '88%' }}>
                 <FlatList
                   data={ketchList.filter(item => item.status === activeKetchType)}
                   keyExtractor={item => item._id}
@@ -87,12 +87,13 @@ const KetchesScreen = ({navigation}) => {
                     <View
                       style={{
                         width: "100%",
-                        borderColor: colors.dark[100],
+                        borderColor: colors.dark[200],
                         borderWidth: 3,
                         paddingVertical: 10,
                         paddingHorizontal: 10,
                         borderRadius: 20,
                         flexDirection: 'row',
+                        marginBottom: 8,
                         justifyContent: "space-between"
 
                       }}>
@@ -116,8 +117,7 @@ const KetchesScreen = ({navigation}) => {
                         </StyledView>
                       </StyledView>
 
-                      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={()=>
-                        {navigation.navigate("Ketch", { ketchId: item._id })}
+                      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { navigation.navigate("Ketch", { ketchId: item._id }) }
                       }>
                         <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
                       </TouchableOpacity>

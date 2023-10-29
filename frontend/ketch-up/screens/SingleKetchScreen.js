@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
-import {Image} from 'expo-image'
+import { Image } from 'expo-image'
 import React, { useEffect, useState } from 'react'
 import { styled } from 'nativewind'
 import colors from "../styles"
@@ -15,10 +15,10 @@ const StyledText = styled(Text);
 const pfp = require("../assets/pfp_test.jpeg")
 
 const defaultKetch = {
-    name : "Ketch Name",
+    name: "Ketch Name",
     status: "IN PROGRESS",
     deadline: "'05 October 2011 14:48 UTC'",
-    photo:"",
+    photo: "",
     creator: "",
     joincode: "",
     preference: {},
@@ -32,16 +32,25 @@ const defaultKetch = {
 }
 
 const SingleKetchScreen = ({ route, navigation }) => {
+<<<<<<< HEAD
     const {ketchId} = route.params
+=======
+    const { ketchId } = route.params
+>>>>>>> 885d8db (create ketch)
     const [curKetch, setKetch] = useState(defaultKetch)
-    useEffect(()=>{
+    useEffect(() => {
         console.log(API_LINK + '/ketch/' + ketchId)
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
+<<<<<<< HEAD
         .then((data) => {setKetch(data.message); console.log(data.message)})
     
+=======
+            .then((ketchObject) => setKetch(ketchObject))
+
+>>>>>>> 885d8db (create ketch)
     }, [ketchId])
     return (
-        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{...AndroidStyles.droidSafeArea}}>
+        <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{
                 position: "absolute",
                 top: 60,

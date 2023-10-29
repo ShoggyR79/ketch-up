@@ -104,6 +104,8 @@ const HomeScreen = () => {
           </Text>
           <StyledView className='flex-row w-100 h-16 mt-2 items-center justify-around'>
             <StyledView className='items-center'>
+
+
               <Text style={{ fontSize: 20, fontWeight: "600" }}>{ketchList.length}</Text>
               <Text style={{ fontSize: 16 }}>Ketches</Text>
             </StyledView>
@@ -125,7 +127,7 @@ const HomeScreen = () => {
           paddingHorizontal: 10,
           marginVertical: -40,
         }}>
-          <View style= {{
+          <View style={{
             width: "100%",
           }}>
             <FlatList
@@ -142,8 +144,8 @@ const HomeScreen = () => {
               renderItem={({ item }) => (
                 <TouchableOpacity>
                   <Image source={item.photo} style={{
-                    width: width*2/7,
-                    height: width*2/7,
+                    width: width * 2 / 7,
+                    height: width * 2 / 7,
                     margin: 6
                   }} />
                 </TouchableOpacity>

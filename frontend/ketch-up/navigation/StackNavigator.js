@@ -18,32 +18,33 @@ const StackNavigator = () => {
     // user = ""; // placeholder
     const { user } = useAuth();
     return (
-        
-                <Stack.Navigator screenOptions={{
-                    headerShown: false,
-                }}>
-                    {user ? (
-                        <>
-                            <Stack.Group>
-                                <Stack.Screen name="Tab" component={Tabbar} />
-                                <Stack.Screen name="Ketch" component={SingleKetchScreen} />
-                                <Stack.Screen name="Swipe" component={SwipeActivityScreen} />
-                                <Stack.Screen name="Ketches" component={KetchesScreen} />
-                            </Stack.Group>
-                            <Stack.Group screenOptions={{ presentation: "containedTransparentModal" }}>
-                                <Stack.Screen name="Modal" component={ModalKetch} />
-                                <Stack.Screen name="Join" component={JoinKetchScreen} />
-                                <Stack.Screen name="Create" component={CreateKetchScreen} />
-                            </Stack.Group>
-                        </>
-                    ) :
-                        <Stack.Group>
-                            <Stack.Screen name="Login" component={LoginScreen} />
-                            <Stack.Screen name="Register" component={RegisterScreen} />
-                        </Stack.Group>
-                    }
-                </Stack.Navigator>
-   
+
+        <Stack.Navigator screenOptions={{
+            headerShown: false,
+        }}>
+            {user ? (
+                <>
+                    <Stack.Group>
+                        <Stack.Screen name="Tab" component={Tabbar} />
+                        <Stack.Screen name="Ketch" component={SingleKetchScreen} />
+                        <Stack.Screen name="Swipe" component={SwipeActivityScreen} />
+                        <Stack.Screen name="Ketches" component={KetchesScreen} />
+                        <Stack.Screen name="SingleKetch" component={SingleKetchScreen} />
+                    </Stack.Group>
+                    <Stack.Group screenOptions={{ presentation: "containedTransparentModal" }}>
+                        <Stack.Screen name="Modal" component={ModalKetch} />
+                        <Stack.Screen name="Join" component={JoinKetchScreen} />
+                        <Stack.Screen name="Create" component={CreateKetchScreen} />
+                    </Stack.Group>
+                </>
+            ) :
+                <Stack.Group>
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="Register" component={RegisterScreen} />
+                </Stack.Group>
+            }
+        </Stack.Navigator>
+
     )
 }
 

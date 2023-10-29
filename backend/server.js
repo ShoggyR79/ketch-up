@@ -3,13 +3,16 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
 const userSchema = require("./schemas/userSchema")
 const ketchSchema = require("./schemas/ketchSchema");
 const hangoutSchema = require("./schemas/hangoutSchema")
 const aws = require('aws-sdk')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
+
+var fs = require("fs");
+var https = require("https");
 
 const s3 = new aws.S3({
     accessKeyId: "AKIATTJ3GFNWVFE4D4V5",
@@ -39,8 +42,20 @@ mongodbConnect()
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
-// This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
+// https
+//   .createServer(
+//     {
+//       key: fs.readFileSync("server.key"),
+//       cert: fs.readFileSync("server.cert"),
+//     },
+//     app
+//   )
+//   .listen(port, function () {
+//     console.log(
+//       "App listening"
+//     );
+//   });
 
 // user signup
 app.post('/user/signup', async (req, res) => {
@@ -53,7 +68,7 @@ app.post('/user/signup', async (req, res) => {
         
     }
     if(findUser !== null){
-        res.status(400).send({message: "User already exists"})
+        res.status(400).send({message:"User already exists"})
         return
     }
     let user = new userSchema({
@@ -66,11 +81,11 @@ app.post('/user/signup', async (req, res) => {
         ketches: [],
         notification: []
     })
-    let icon = `https://source.boringavatars.com/beam/120/${user._doc._id}?colors=E8E09A,A4DCB9,5BCEBF,83E2E5,738CD1`
+    let icon = `https://source.boringavatars.com/beam/120/${user._doc._id}`
     user._doc.icon = icon
     user.setPassword(req.body.password)
     await user.save()
-    res.status(201).send({...user._doc, message: "OK"})
+    res.status(201).send({message: "OK"})
 }); 
 
 // used for authentication
@@ -84,13 +99,13 @@ app.post('/user/login', async (req, res) => {
         
     }
     if (user === null){
-        res.status(400).send("Incorrect username or password")
+        res.status(400).send({message:"Incorrect username or password"})
         return
     }
     if (user.authenticate(req.body.password)){
-        res.status(201).send(user._doc._id)
+        res.status(201).send({message: user._doc._id})
     }else{
-        res.status(400).send("Incorrect username or password")
+        res.status(400).send({message: "Incorrect username or password"})
     }
 });
 
@@ -105,7 +120,7 @@ app.get('/user/:userId', async (req, res) => {
         
     }
     if (user === null) {
-        res.status(400).send({message: "Cannot get user"})
+        res.status(400).send({message:"Cannot get user"})
         return
     }
     let ketches = []
@@ -120,14 +135,13 @@ app.get('/user/:userId', async (req, res) => {
         }
         
         if(ketch === null){
-            res.status(400).send("Error getting sketch")
+            res.status(400).send({message:"Error getting sketch"})
             return
         }
         ketches.push(ketch._doc)
     }
     user._doc.ketches = ketches
-    console.log(user._doc.ketches)
-    res.status(200).send({...user._doc, message: "OK"})
+    res.status(200).send({message: user._doc})
 });
 
 const generateHangouts = async (location) => {
@@ -145,7 +159,7 @@ const generateHangouts = async (location) => {
     });
     query = await query.json()
     hangouts = []
-    for(let i=0;i<Math.min(10, query.places.length);++i){
+    for(let i=0;i<Math.min(10, query.places?.length);++i){
         let place = query.places[i]
         let h = {
             name: place.displayName.text,
@@ -169,7 +183,7 @@ const generateHangouts = async (location) => {
 }
 
 app.get('/', async(req, res) => {
-    res.send("Hello")
+    res.send({message: "Hello"})
 })
 // create ketch
 app.post('/ketch', async (req, res) => {
@@ -181,7 +195,9 @@ app.post('/ketch', async (req, res) => {
             name: h.name,
             pic: h.pic,
             address: h.address,
-            votes: []
+            id: h.id,
+            votes: [],
+            voteNo: []
         }
     }
     let user = null
@@ -194,7 +210,7 @@ app.post('/ketch', async (req, res) => {
     }
     
     if(user === null){
-        res.status(400).send("User not found")
+        res.status(400).send({message: "User not found"})
         return
     }
     let ketch = new ketchSchema({
@@ -203,10 +219,11 @@ app.post('/ketch', async (req, res) => {
         status: "SCHEDULED",
         activity: {
             name: "undecided",
-            pic: ""
+            pic: "",
+            address: ""
         },
         deadline: new Date(Number(req.body.deadline)),
-        photo: "empty",
+        photo: "https://scontent-atl3-2.xx.fbcdn.net/v/t1.15752-9/387577117_850877816695243_3854472143110188776_n.png?_nc_cat=101&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=y0TDCtbF4WAAX8wPUci&_nc_ht=scontent-atl3-2.xx&oh=03_AdRvG6yOFaiwPM_lWH7JQaUqCtTvcLxW6LUGV8aRi-XARw&oe=656550EB",
         joincode: joincode,
         preference: preference,
         swiped: [],
@@ -226,11 +243,11 @@ app.post('/ketch', async (req, res) => {
 
     }
     
-    res.status(201).send({...ketch._doc, message: "OK"})
+    res.status(201).send({message: ketch._doc._id})
 });
 
 // get ketch
-app.get('/ketch', async (req, res) => {
+app.get('/ketch/:ketchId', async (req, res) => {
     let ketch = null
     try{
         ketch = await ketchSchema.findOne({
@@ -241,7 +258,7 @@ app.get('/ketch', async (req, res) => {
     }
     
     if (ketch === null){
-        res.status(400).send({message: "Ketch not found"})
+        res.status(400).send({message:"Ketch not found"})
         return
     }
 
@@ -257,13 +274,13 @@ app.get('/ketch', async (req, res) => {
         }
         
         if(user === null){
-            res.status(400).send("Error getting user")
+            res.status(400).send({message:"Error getting user"})
             return
         }
         users.push(user._doc)
     }
     ketch._doc.users = users
-    res.status(200).send({...ketch._doc, message: "OK"})
+    res.status(200).send({message:ketch._doc})
 });
 
 // join ketch
@@ -278,11 +295,15 @@ app.put('/ketch/join', async (req, res) => {
         
     }
     if (ketch === null){
-        res.status(400).send({message: "Ketch not found"})
+        res.status(400).send({message:"Ketch not found"})
         return
     }
-    if (ketch._doc._status !== "SCHEDULED"){
-        res.status(400).send({message: "Ketch is not available for scheduling"})
+    if (ketch._doc.users.includes(req.body.userId)){
+        res.status(201).send({message:ketch._doc._id})
+        return
+    }
+    if (ketch._doc.status !== "SCHEDULED"){
+        res.status(400).send({message:"Ketch is not available for scheduling"})
         return
     }
     // add ketchid to user
@@ -310,13 +331,13 @@ app.put('/ketch/join', async (req, res) => {
     }catch(err){
 
     }
-    
-    res.status(201).send({ketchId: ketch._doc._id, message: "OK"})
+    res.status(201).send({message:ketch._doc._id})
 });
 
 // update ketch when swiping
 app.put('/ketch/swipe', async (req, res) => {
     let ketch = null
+    console.log(req.body)
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId
@@ -325,23 +346,39 @@ app.put('/ketch/swipe', async (req, res) => {
         
     }
     if (ketch === null){
-        res.status(400).send({message: "Ketch not found"})
+        res.status(400).send({message:"Ketch not found"})
         return
     }
 
-    try{
-        await ketchSchema.findOneAndUpdate({
-            _id: req.body.ketchId
-        },{
-            $push: {
-                [`preference.${req.body.hangoutId}`]: req.body.userId
-            }
-        })
-    }catch(err){
-
+    if(req.body.dir == "right"){
+        try{
+            await ketchSchema.findOneAndUpdate({
+                _id: req.body.ketchId
+            },{
+                $push: {
+                    [`preference.${req.body.hangoutId}.votes`]: req.body.userId
+                }
+            })
+        }catch(err){
+    
+        }
+    }
+    if(req.body.dir == "left"){
+        try{
+            await ketchSchema.findOneAndUpdate({
+                _id: req.body.ketchId
+            },{
+                $push: {
+                    [`preference.${req.body.hangoutId}.voteNo`]: req.body.userId
+                }
+            })
+        }catch(err){
+    
+        }
     }
     
-    if(!ketch._doc.swiped.contains(req.body.userId)){
+    
+    if(!ketch._doc.swiped.includes(req.body.userId)){
         try{
             await ketchSchema.findOneAndUpdate({
                 _id: req.body.ketchId
@@ -354,13 +391,14 @@ app.put('/ketch/swipe', async (req, res) => {
 
         }
     }
-    res.status(204).send({...ketch._doc, message: "OK"})
+    res.status(204).send({message:ketch._doc._id})
 });
 
 
 // plan the sketch (complete the planning phase)
 // TODO: multicast message to websockets
 app.put('/ketch/plan', async (req, res) => {
+    console.log(req.body)
     let ketch = null
     try{
         ketch = await ketchSchema.findOne({
@@ -370,11 +408,11 @@ app.put('/ketch/plan', async (req, res) => {
         
     }
     if (ketch === null){
-        res.status(400).send({message: "Ketch not found"})
+        res.status(400).send({message:"Ketch not found"})
         return
     }
     if (ketch._doc.status !== "SCHEDULED"){
-        res.status(400).send({message: "Incorrect ketch status"})
+        res.status(400).send({message:"Incorrect ketch status"})
         return
     }
     let preference = ketch._doc.preference
@@ -391,12 +429,6 @@ app.put('/ketch/plan', async (req, res) => {
             }
         }
     })
-    res.status(204).send({...ketch._doc, message: "OK"})
-});
-
-// complete the ketch (upload photo)
-app.post('/ketch/complete', upload.single('photo'), async (req, res) => {
-    let ketch = null
     try{
         ketch = await ketchSchema.findOne({
             _id: req.body.ketchId
@@ -404,17 +436,31 @@ app.post('/ketch/complete', upload.single('photo'), async (req, res) => {
     }catch(err){
         
     }
+    res.status(201).send({message:ketch._doc})
+});
+
+// complete the ketch (upload photo)
+app.post('/ketch/complete/:ketchId', upload.single('photo'), async (req, res) => {
+    let ketch = null
+    console.log("in")
+    try{
+        ketch = await ketchSchema.findOne({
+            _id: req.params.ketchId
+        })
+    }catch(err){
+        
+    }
     if (ketch === null){
-        res.status(400).send({message: "Ketch not found"})
+        res.status(400).send({message:"Ketch not found"})
         return
     }
     if (ketch._doc.status !== "PLANNED"){
-        res.status(400).send({message: "Incorrect ketch status"})
+        res.status(400).send({message:"Incorrect ketch status"})
         return
     }
     
     await ketchSchema.updateOne({
-        _id: req.body.ketchId
+        _id: req.params.ketchId
     },{
         $set: {
             status: "COMPLETED",
@@ -434,5 +480,13 @@ app.post('/ketch/complete', upload.single('photo'), async (req, res) => {
 
         }
     }
-    res.status(204).send({...ketch._doc, message: "OK"})
+    try{
+        ketch = await ketchSchema.findOne({
+            _id: req.params.ketchId
+        })
+    }catch(err){
+        
+    }
+    console.log({message:ketch._doc})
+    res.status(201).send({message:ketch._doc})
 });

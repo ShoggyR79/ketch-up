@@ -66,9 +66,9 @@ const JoinKetchScreen = ({ navigation }) => {
                         margin: 12,
                         borderWidth: 2,
                         padding: 10,
-                        backgroundColor: colors.dark[100],
+                        backgroundColor: colors.background,
                         borderRadius: 20,
-                        color: colors.dark[300],
+                        color: colors.dark[50],
 
                     }}
                     onChangeText={setJoinCode}

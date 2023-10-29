@@ -22,16 +22,17 @@ const CreateKetchScreen = ({navigation}) => {
   const [open, setOpen] = useState(false)
   const [location, setLocation] = useState("")
   const [error, setError] = useState("");
-  const {user} = useAuth()
+  const { user } = useAuth()
   const onChange = (e, selectedDate) => {
     setDate(selectedDate);
     setOpen(false);
   };
   const createKetch = async () => {
-    const response = await fetch(API_LINK+"/ketch", {
+    const response = await fetch(API_LINK + "/ketch", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
+<<<<<<< HEAD
     },
     body: JSON.stringify({ name, deadline: Math.floor(date.getTime()), location,  userId: user})
     })
@@ -39,6 +40,15 @@ const CreateKetchScreen = ({navigation}) => {
     if (response.status == 201){
       navigation.goBack()
     }else{
+=======
+      },
+      body: JSON.stringify({ name, deadline: date, location, userId: user })
+    })
+    const data = await response.json()
+    if (data.status == 201) {
+      navigation.navigate("Ketch", { id: data.message })
+    } else {
+>>>>>>> 4da49c2 (ui)
       setError(data.message)
     }
   }
@@ -69,7 +79,7 @@ const CreateKetchScreen = ({navigation}) => {
           borderWidth: 2,
           paddingVertical: 12,
           paddingHorizontal: 15,
-          backgroundColor: colors.dark[100],
+          backgroundColor: colors.dark[50],
           borderRadius: 20,
           color: colors.dark[300],
 
@@ -112,7 +122,7 @@ const CreateKetchScreen = ({navigation}) => {
           borderWidth: 2,
           paddingVertical: 12,
           paddingHorizontal: 15,
-          backgroundColor: colors.dark[100],
+          backgroundColor: colors.dark[50],
           borderRadius: 20,
           color: colors.dark[300],
 

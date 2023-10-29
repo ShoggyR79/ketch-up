@@ -34,10 +34,9 @@ const defaultKetch = {
 const SingleKetchScreen = ({ route, navigation }) => {
     const { ketchId } = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
-    useEffect(() => {
+    useEffect(()=>{
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-            .then((ketchObject) => setKetch(ketchObject))
-
+        .then((data) => {setKetch(data.message); })
     }, [ketchId])
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
@@ -162,7 +161,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
                 </StyledView>
 
-                <TouchableOpacity onPress={() => navigation.navigate("Swipe", { ketchId })}>
+                <TouchableOpacity onPress={() => navigation.navigate("Swipe", {ketchId})}>
                     <View style={{
                         marginTop: 30,
                         height: 60,

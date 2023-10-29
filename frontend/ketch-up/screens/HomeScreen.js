@@ -32,11 +32,12 @@ const HomeScreen = () => {
   useEffect(() => {
     fetch(API_LINK + '/user/' + user).then((response) => response.json())
       .then((data) => {
-        setName(data.messsage.name)
-        setStreak(data.messsage.streak)
-        setIcon(data.messsage.icon)
-        setKetchList(data.messsage.ketches)
+        setName(data.message.name)
+        setStreak(data.message.streak)
+        setIcon(data.message.icon)
+        setKetchList(data.message.ketches)
       })
+      .catch((error) => console.error(error))
   }, [user])
 
   return (

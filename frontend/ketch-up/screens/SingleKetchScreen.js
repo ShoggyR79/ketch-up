@@ -37,7 +37,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
     useEffect(()=>{
         console.log(API_LINK + '/ketch/' + ketchId)
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-        .then((data) => setKetch(data.message))
+        .then((data) => {setKetch(data.message); console.log(data.message)})
     
     }, [ketchId])
     return (

@@ -38,7 +38,8 @@ const SingleKetchScreen = ({ route, navigation }) => {
     const { ketchId } = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
 
-    const [swiped, setSwiped] = useState(true);
+    const [swiped, setSwiped] = useState(false);
+    const [allVoted, setAllVoted] = useState(true);
 
     useEffect(() => {
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
@@ -116,9 +117,10 @@ const SingleKetchScreen = ({ route, navigation }) => {
                                         borderWidth: 2,
                                         paddingVertical: 5,
                                         paddingHorizontal: 8,
+                                        backgroundColor: allVoted ? colors.accent.std : colors.ketchup.lighter,
 
                                     }}>
-                                    <StyledText className='mr-2'>Finalize</StyledText>
+                                    <StyledText className='mr-2 font-semibold text-lg '>Finalize</StyledText>
                                     <Feather name="skip-forward" size={24} color="black" />
                                 </TouchableOpacity>
                             </View>

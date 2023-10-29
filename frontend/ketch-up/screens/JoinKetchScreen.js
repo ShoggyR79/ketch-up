@@ -52,8 +52,8 @@ const JoinKetchScreen = ({ navigation }) => {
             <StyledTouchable className='mt-5 ml-8 self-start' onPress={() => { navigation.goBack() }}>
                 <FontAwesome5 name="chevron-down" size={24} color="black" />
             </StyledTouchable>
-            <Text style={{ color: "gray", marginTop: 50 }}>{error}</Text>
-            <StyledText className='text-2xl font-semibold tracking-wider mb-5'>6 Digit Code</StyledText>
+            <StyledText className='my-8 text-lg font-semibold'>{error}</StyledText>
+            <StyledText className='text-2xl font-semibold tracking-wider mb-5'>type code</StyledText>
 
             <StyledView className='flex-row items-center'>
                 <TextInput
@@ -73,9 +73,9 @@ const JoinKetchScreen = ({ navigation }) => {
                     placeholder="code"
                     placeholderTextColor={colors.dark[300]}
                 />
-                <StyledTouchable className='rounded-3xl bg-light-100 p-2' onPress={() => { joinKetch() }}>
+                <StyledTouchable className='rounded-3xl border-2 border-dark-300 bg-accent-dark p-2' onPress={() => { joinKetch() }}>
                     {/* <StyledText>Join</StyledText> */}
-                    <AntDesign name="enter" size={24} color="black" />
+                    <AntDesign name="enter" size={24} color="white" />
                 </StyledTouchable>
 
             </StyledView>

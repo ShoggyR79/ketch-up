@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
-import {React, useState, useEffect} from 'react'
+import { View, Text, SafeAreaView, TouchableOpacity, FlatList, Dimensions } from 'react-native'
+import { React, useState, useEffect } from 'react'
 import { Image } from 'expo-image';
 import { styled } from "nativewind";
 import colors from "../styles";
@@ -20,13 +20,14 @@ const StyledText = styled(Text);
 
 
 const HomeScreen = () => {
-  const {user, handleLogout} = useAuth();
+  const { user, handleLogout } = useAuth();
   const [name, setName] = useState("");
   const [streak, setStreak] = useState(0)
   const [ongoing, setOngoing] = useState(0)
   const [icon, setIcon] = useState("")
   const [photos, setPhotos] = useState([])
   const [ketchList, setKetchList] = useState([])
+  const { width, height } = Dimensions.get('window');
 
   useEffect(() => {
     fetch(API_LINK + '/user/' + user).then((response) => response.json())
@@ -39,7 +40,7 @@ const HomeScreen = () => {
   }, [user])
 
   return (
-    <StyledSafeAreaView className="flex-1 bg-background" style={{...AndroidStyles.droidSafeArea}}>
+    <StyledSafeAreaView className="flex-1 bg-background" style={{ ...AndroidStyles.droidSafeArea, height: "80%" }}>
       <StatusBar backgroundColor={colors.dark[50]} />
 
       <View style={{ width: "100%" }}>
@@ -82,7 +83,7 @@ const HomeScreen = () => {
             padding: 15,
             borderRadius: 999,
           }}
-          onPress={handleLogout}>
+            onPress={handleLogout}>
             <Feather name="log-out" size={24} color="black" style={{ zIndex: 1 }} />
           </TouchableOpacity>
 
@@ -110,7 +111,7 @@ const HomeScreen = () => {
               <Text style={{ fontSize: 16 }}>Streak</Text>
             </StyledView>
             <StyledView className='items-center '>
-              <Text style={{ fontSize: 20, fontWeight: "600" }}>{ketchList.length-ketchList.filter(elem => elem.status === "COMPLETED").length}</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>{ketchList.length - ketchList.filter(elem => elem.status === "COMPLETED").length}</Text>
               <Text style={{ fontSize: 16 }}>Ongoing</Text>
             </StyledView>
           </StyledView>
@@ -123,22 +124,31 @@ const HomeScreen = () => {
           paddingHorizontal: 10,
           marginVertical: -40,
         }}>
-          <FlatList
-            data={ketchList.filter(item => item.status == "COMPLETED")}
-            keyExtractor={item => item._id}
-            contentContainerStyle={{ columnGap: 10 }}
-            numColumns={3}
-            renderItem={({ item }) => (
-              <TouchableOpacity>
-                <Image source={item.photo} style={{
-                  width: 120,
-                  height: 120,
-                  margin: 5
-                }} />
-              </TouchableOpacity>
-            )}>
-          </FlatList>
-
+          <View style= {{
+            width: "100%",
+          }}>
+            <FlatList
+              data={ketchList.concat(ketchList).concat(ketchList).filter(item => item.status == "COMPLETED")}
+              keyExtractor={item => item._id}
+              contentContainerStyle={{ columnGap: 10 }}
+              numColumns={3}
+              style={{
+                flexGrow: 0,
+                overflow: "scroll",
+                height: "60%",
+                width: "100%",
+              }}
+              renderItem={({ item }) => (
+                <TouchableOpacity>
+                  <Image source={item.photo} style={{
+                    width: width*2/7,
+                    height: width*2/7,
+                    margin: 6
+                  }} />
+                </TouchableOpacity>
+              )}>
+            </FlatList>
+          </View>
         </View>
       </View>
 

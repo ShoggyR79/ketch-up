@@ -14,7 +14,9 @@ const pfp = require("../assets/pfp_test.jpeg")
 
 const ketchParticipants = [{ name: "bubu", image: pfp }, { name: "jerry", image: pfp }, { name: "sharkie", image: pfp }]
 
-const SingleKetchScreen = ({ navigation }) => {
+const SingleKetchScreen = ({ route, navigation }) => {
+    const {ketchId} = route.params
+    console.log(ketchId)
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light'>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{

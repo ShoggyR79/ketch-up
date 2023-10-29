@@ -20,7 +20,7 @@ const ketchType = ["SCHEDULED", "PLANNING", "COMPLETED", "CANCELED"]
 const data = [];
 
 
-const KetchesScreen = () => {
+const KetchesScreen = ({navigation}) => {
   const { user } = useAuth();
   const [activeKetchType, setActiveKetchType] = useState("SCHEDULED");
   const [isEmpty, setIsEmpty] = useState(false);
@@ -107,15 +107,17 @@ const KetchesScreen = () => {
                           <StyledText className='text-lg font-medium'>{item.name}</StyledText>
                           <StyledText>{item.deadline}</StyledText>
                           <StyledText className='text-dark-200'>with {
-                            item.users.map(user => user.name).join(",").length > 30 ?
-                              item.users.map(user => user.name).join(",").substr(0, 27) + "..." :
-                              item.users.map(user => user.name).join(",")
+                            item.users.filter(elem => elem != user).map(u => u.name).join(",").length > 30 ?
+                              item.users.filter(elem => elem != user).map(u => u.name).join(",").substr(0, 27) + "..." :
+                              item.users.filter(elem => elem != user).map(u => u.name).join(",")
                           }</StyledText>
 
                         </StyledView>
                       </StyledView>
 
-                      <TouchableOpacity style={{ alignSelf: 'center' }}>
+                      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={()=>
+                        {navigation.navigate("Ketch", { ketchId: item._id })}
+                      }>
                         <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
                       </TouchableOpacity>
 

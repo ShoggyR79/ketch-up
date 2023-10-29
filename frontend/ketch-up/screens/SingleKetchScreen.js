@@ -5,6 +5,8 @@ import { styled } from 'nativewind'
 import colors from "../styles"
 
 import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import AndroidStyles from '../AndroidStyles';
 import { API_LINK } from '../env'
@@ -13,6 +15,7 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 
 const pfp = require("../assets/pfp_test.jpeg")
+
 
 const defaultKetch = {
     name: "Ketch Name",
@@ -34,9 +37,12 @@ const defaultKetch = {
 const SingleKetchScreen = ({ route, navigation }) => {
     const { ketchId } = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
-    useEffect(()=>{
+
+    const [swiped, setSwiped] = useState(true);
+
+    useEffect(() => {
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-        .then((data) => {setKetch(data.message); })
+            .then((data) => { setKetch(data.message); })
     }, [ketchId])
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
@@ -99,8 +105,22 @@ const SingleKetchScreen = ({ route, navigation }) => {
                         </View>
                         <View style={{ marginTop: 15 }}>
                             <StyledText className='font-semibold text-lg'>Activity</StyledText>
-                            <View>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <StyledText className="mt-2 text-lg">{curKetch.activity.name}</StyledText>
+                                <TouchableOpacity style=
+                                    {{
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        borderWidth: 2,
+                                        paddingVertical: 5,
+                                        paddingHorizontal: 8,
+
+                                    }}>
+                                    <StyledText className='mr-2'>Finalize</StyledText>
+                                    <Feather name="skip-forward" size={24} color="black" />
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <View style={{ width: "100%", marginTop: 15 }}>
@@ -134,9 +154,10 @@ const SingleKetchScreen = ({ route, navigation }) => {
                                             flexDirection: "row",
                                             alignItems: "center",
                                             justifyContent: "between",
+                                            backgroundColor: swiped ? colors.accent.light : colors.ketchup.lighter,
 
                                         }}>
-                                        <Image contentFit="contain" style={{ width: 50, height: 50, marginRight: 10, borderRadius: 999 }} source={item.icon} />
+                                        <Image contentFit="contain" style={{ width: 50, height: 50, marginRight: 10, borderRadius: 999, borderWidth: 2, borderColor: colors.dark[200] }} source={item.icon} />
                                         <Text
                                             style={{
                                                 color: colors.dark[300],
@@ -161,23 +182,46 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
                 </StyledView>
 
-                <TouchableOpacity onPress={() => navigation.navigate("Swipe", {ketchId})}>
-                    <View style={{
-                        marginTop: 30,
+                <StyledView className='flex-row mx-6 mt-10 justify-between items-center'>
+
+
+
+                    <TouchableOpacity style={{
+                        // marginTop: 30,
                         height: 60,
                         backgroundColor: colors.accent.std,
-                        width: "90%",
+                        width: "80%",
                         alignSelf: "center",
                         justifyContent: "center",
                         alignItems: "center",
-                        marginBottom: 20,
+                        marginBottom: 16,
                         borderRadius: 20,
                         borderWidth: 2,
                         borderColor: colors.dark[300],
-                    }}>
+                    }} onPress={() => navigation.navigate("Swipe", { ketchId })}>
+
                         <StyledText className='text-xl font-semibold tracking-wider'>pick activity</StyledText>
-                    </View>
-                </TouchableOpacity>
+                        {/* </View> */}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{
+                        // marginTop: 30,
+                        height: 60,
+                        backgroundColor: colors.dark[100],
+                        width: 60,
+                        alignSelf: "center",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginBottom: 16,
+                        borderRadius: 20,
+                        borderWidth: 2,
+                        borderColor: colors.dark[300],
+
+                    }}>
+                        <MaterialIcons name="delete" size={24} color="black" />
+                    </TouchableOpacity>
+
+                </StyledView>
 
 
 

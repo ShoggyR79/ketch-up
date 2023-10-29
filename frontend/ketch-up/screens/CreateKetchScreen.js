@@ -57,7 +57,7 @@ const CreateKetchScreen = ({navigation}) => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'start',
-      top: 250,
+      top: 210,
       backgroundColor: colors.ketchup.lighter,
       borderTopRightRadius: 40,
       borderTopLeftRadius: 40,
@@ -79,17 +79,37 @@ const CreateKetchScreen = ({navigation}) => {
           borderWidth: 2,
           paddingVertical: 12,
           paddingHorizontal: 15,
-          backgroundColor: colors.dark[50],
+          // backgroundColor: colors.dark[50],
           borderRadius: 20,
-          color: colors.dark[300],
+          backgroundColor: colors.background,
 
         }}
-        // onChangeText={setJoinCode}
-        // value={joinCode}
-        // placeholder="code"
         onChangeText={setName}
         value={name}
         placeholder="give this ketch a name!"
+        placeholderTextColor={colors.dark[300]}
+      />
+
+      <StyledText className='self-start mt-2 mb-2 text-lg font-semibold'>Ketch Location:</StyledText>
+
+      <TextInput
+        style={{
+          height: 50,
+          width: "100%",
+          // margin: 12,
+          borderWidth: 2,
+          paddingVertical: 12,
+          paddingHorizontal: 15,
+          // backgroundColor: colors.dark[50],
+          borderRadius: 20,
+          backgroundColor: colors.background,
+
+        }}
+
+        onChangeText={setLocation}
+
+        value={location}
+        placeholder="nashville, the moon, your mom's basement, etc"
         placeholderTextColor={colors.dark[300]}
       />
 
@@ -112,7 +132,7 @@ const CreateKetchScreen = ({navigation}) => {
         />
       )}
 
-      <StyledText className='self-start mt-2 mb-2 text-lg font-semibold'>Ketch Location:</StyledText>
+      {/* <StyledText className='self-start mt-2 mb-2 text-lg font-semibold'>Ketch Location:</StyledText>
 
       <TextInput
         style={{
@@ -133,7 +153,7 @@ const CreateKetchScreen = ({navigation}) => {
         value={location}
         placeholder="nashville, the moon, your mom's basement, etc"
         placeholderTextColor={colors.dark[300]}
-      />
+      /> */}
 
       <StyledTouchable className='mt-5 py-2 px-6 border-2 bg-accent-std rounded-2xl' onPress={() => { createKetch() }}>
         <StyledText className='text-xl font-semibold '>create</StyledText>

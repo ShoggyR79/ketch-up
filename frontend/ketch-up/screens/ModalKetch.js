@@ -24,7 +24,7 @@ const ModalKetch = ({ navigation }) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'start',
-        top: 100,
+        top: 60,
         backgroundColor: colors.background
       }}>
         <Text style={{ fontSize: 30, fontWeight: "600", color: colors.ketchup.dark }}>ready to ketch'up?</Text>

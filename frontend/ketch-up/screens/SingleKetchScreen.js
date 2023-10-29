@@ -24,7 +24,7 @@ const SingleKetchScreen = ({ navigation }) => {
             }}>
                 <AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
-            <StyledView className='w-full h-4/5 bg-background b-0 self-end rounded-t-3xl'>
+            <StyledView className='w-full h-5/6 bg-background b-0 self-end rounded-t-3xl'>
                 <StyledView className='flex-1 items-center'>
                     <Image source={pfp}
                         resizeMode='contain'
@@ -93,7 +93,7 @@ const SingleKetchScreen = ({ navigation }) => {
                                             borderRadius: 10,
                                             borderColor: colors.dark[200],
                                             borderWidth: 2,
-                                            height: 60,
+                                            height: 80,
                                             width: "100%",
                                             // width: "fit-content",
                                             // height: "fit-content",
@@ -103,7 +103,7 @@ const SingleKetchScreen = ({ navigation }) => {
                                             justifyContent: "between",
 
                                         }}>
-                                        <Image resizeMode="contain" style={{ width: 40, height: 40, marginRight: 10, borderRadius: 999 }} source={item.image} />
+                                        <Image resizeMode="contain" style={{ width: 50, height: 50, marginRight: 10, borderRadius: 999 }} source={item.image} />
                                         <Text
                                             style={{
                                                 color: colors.dark[300],

@@ -16,7 +16,7 @@ const StyledView = styled(View);
 
 
 const { API_LINK } = require('../env.js')
-const CreateKetchScreen = ({ navigation }) => {
+const CreateKetchScreen = ({navigation}) => {
   const [name, setName] = useState("");
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
@@ -33,11 +33,11 @@ const CreateKetchScreen = ({ navigation }) => {
       headers: {
         'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name, deadline: date, location,  userId: user})
+    body: JSON.stringify({ name, deadline: Math.floor(date.getTime()), location,  userId: user})
     })
     const data = await response.json()
-    if (data.status == 201){
-      navigation.navigate("Ketch", { id: data.message })
+    if (response.status == 201){
+      navigation.goBack()
     }else{
       setError(data.message)
     }

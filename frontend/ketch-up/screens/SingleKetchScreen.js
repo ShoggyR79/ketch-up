@@ -7,6 +7,8 @@ import colors from "../styles"
 import { AntDesign } from '@expo/vector-icons';
 
 import AndroidStyles from '../AndroidStyles';
+import * as ImagePicker from 'expo-image-picker';
+
 import { API_LINK } from '../env'
 const StyledSafeAreaView = styled(SafeAreaView)
 const StyledView = styled(View);
@@ -34,9 +36,46 @@ const defaultKetch = {
 const SingleKetchScreen = ({ route, navigation }) => {
     const { ketchId } = route.params
     const [curKetch, setKetch] = useState(defaultKetch)
-    useEffect(()=>{
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+            // ImagePicker saves the taken photo to disk and returns a local URI to it
+            let localUri = result.uri;
+            let filename = localUri.split('/').pop();
+
+            // Infer the type of the image
+            let match = /\.(\w+)$/.exec(filename);
+            let type = match ? `image/${match[1]}` : `image`;
+
+            // Upload the image using the fetch and FormData APIs
+            let formData = new FormData();
+            // Assume "photo" is the name of the form field the server expects
+            formData.append('photo', { uri: localUri, name: filename, type });
+
+            const response = await fetch(API_LINK + "/ketch/complete", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'content-type': 'multipart/form-data',
+                },
+            });
+
+            if (response.status === 204) {
+                navigation.navigate("Ketch", { id: ketchId })
+            }
+        }
+    };
+    useEffect(() => {
         fetch(API_LINK + '/ketch/' + ketchId).then((response) => response.json())
-        .then((data) => {setKetch(data.message); })
+            .then((data) => { setKetch(data.message); })
     }, [ketchId])
     return (
         <StyledSafeAreaView className='flex-1 justify-end bg-ketchup-light' style={{ ...AndroidStyles.droidSafeArea }}>
@@ -161,7 +200,7 @@ const SingleKetchScreen = ({ route, navigation }) => {
 
                 </StyledView>
 
-                <TouchableOpacity onPress={() => navigation.navigate("Swipe", {ketchId})}>
+                <TouchableOpacity onPress={() => navigation.navigate("Swipe", { ketchId })}>
                     <View style={{
                         marginTop: 30,
                         height: 60,
@@ -175,10 +214,29 @@ const SingleKetchScreen = ({ route, navigation }) => {
                         borderWidth: 2,
                         borderColor: colors.dark[300],
                     }}>
-                        <StyledText className='text-xl font-semibold tracking-wider'>pick activity</StyledText>
+                        <StyledText className='text-xl font-semibold tracking-wider'>Pick Activity</StyledText>
                     </View>
                 </TouchableOpacity>
-
+                {
+                    curKetch.status === "SCHEDULED" &&
+                    <TouchableOpacity onPress={pickImage}>
+                        <View style={{
+                            marginTop: 30,
+                            height: 60,
+                            backgroundColor: colors.accent.std,
+                            width: "90%",
+                            alignSelf: "center",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginBottom: 20,
+                            borderRadius: 20,
+                            borderWidth: 2,
+                            borderColor: colors.dark[300],
+                        }}>
+                            <StyledText className='text-xl font-semibold tracking-wider'>Upload Image</StyledText>
+                        </View>
+                    </TouchableOpacity>
+                }
 
 
             </StyledView>

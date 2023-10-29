@@ -30,9 +30,13 @@ const JoinKetchScreen = ({ navigation }) => {
             body: JSON.stringify({ joinCode, userId: user })
         })
         const data = await response.json()
+<<<<<<< HEAD
 
         console.log(data);
 
+=======
+        console.log(data)
+>>>>>>> 6d74955 (merge)
         if (response.status === 201) {
             // success
             navigation.navigate("Ketch", { id: data.message })

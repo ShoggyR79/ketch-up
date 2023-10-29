@@ -127,13 +127,13 @@ const HomeScreen = () => {
             data={ketchList.filter(item => item.status == "COMPLETED")}
             keyExtractor={item => item._id}
             contentContainerStyle={{ columnGap: 10 }}
-            numColumns={2}
+            numColumns={3}
             renderItem={({ item }) => (
               <TouchableOpacity>
                 <Image source={item.photo} style={{
                   width: 120,
                   height: 120,
-                  marginBottom: 5,
+                  margin: 5
                 }} />
               </TouchableOpacity>
             )}>

@@ -46,7 +46,7 @@ const JoinKetchScreen = ({ navigation }) => {
             flex: 1,
             alignItems: 'center',
             justifyContent: 'start',
-            top: 250,
+            top: 210,
             backgroundColor: colors.ketchup.lighter,
             borderTopRightRadius: 40,
             borderTopLeftRadius: 40,
@@ -61,11 +61,11 @@ const JoinKetchScreen = ({ navigation }) => {
             <StyledView className='flex-row items-center'>
                 <TextInput
                     style={{
-                        height: 40,
-                        width: 150,
+                        height: 60,
+                        width: 220,
                         margin: 12,
                         borderWidth: 2,
-                        padding: 10,
+                        padding: 20,
                         backgroundColor: colors.background,
                         borderRadius: 20,
                         color: colors.dark[50],
@@ -76,19 +76,13 @@ const JoinKetchScreen = ({ navigation }) => {
                     placeholder="code"
                     placeholderTextColor={colors.dark[300]}
                 />
-                <StyledTouchable className='rounded-3xl border-2 border-dark-300 bg-accent-dark p-2' onPress={() => { joinKetch() }}>
+                <StyledTouchable className='rounded-3xl border-2 border-dark-300 bg-accent-dark p-3' onPress={() => { joinKetch() }}>
                     {/* <StyledText>Join</StyledText> */}
-                    <AntDesign name="enter" size={24} color="white" />
+                    <AntDesign name="enter" size={32} color="white" />
                 </StyledTouchable>
 
             </StyledView>
-            {/* title="JOIN"
-            onPress={() => { joinKetch() }} */}
 
-            {/* <Button
-                title="Go back" r
-                onPress={() => { navigation.goBack() }}
-            /> */}
         </View>
     )
 }

@@ -11,7 +11,11 @@ import { Entypo, AntDesign } from "@expo/vector-icons";
 import { API_LINK } from '../env'
 import useAuth from '../hooks/useAuth';
 
+<<<<<<< HEAD
 const StyledSafeArea = styled(SafeAreaView),
+=======
+const StyledSafeArea = styled(SafeAreaView);
+>>>>>>> d549e31 (push ui)
 
 
 const DUMMY_DATA =

@@ -62,26 +62,26 @@ const Tabbar = () => {
 
       {/* <Tab.Screen name = "CreateKetch" component = {KetchComponent} options = {{tabBarButton: () => (<KetchModal />)}}></Tab.Screen>  */}
 
-      <Tab.Screen 
-      name="ketch" 
-      component={CreateKetchScreen} 
-      options={{
-        // tabBarLabel: 'Home',
-        tabBarIcon: ({ focused }) => (
-          <View style={{ alignItems: "center", justifyContent: "center", top: -25, backgroundColor: colors.ketchup.light, height: 100, width: 100, borderRadius: 50, borderWidth: 15, borderColor: colors.background }}>
-            <Image style={{ width: 30, height: 30, tintColor: focused ? colors.ketchup.dark : colors.dark[200] }} source={blobIcon} />
-          </View>
-        )
-      }}
-      listeners={() => ({
-        tabPress: (e) => {
-          e.preventDefault();
-          navigation.navigate("Modal")
-        }
-      })}
+      <Tab.Screen
+        name="ketch"
+        component={CreateKetchScreen}
+        options={{
+          // tabBarLabel: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center", justifyContent: "center", top: -25, backgroundColor: colors.ketchup.light, height: 100, width: 100, borderRadius: 50, borderWidth: 15, borderColor: colors.background }}>
+              <Image style={{ width: 30, height: 30, tintColor: focused ? colors.ketchup.dark : colors.dark[200] }} source={blobIcon} />
+            </View>
+          )
+        }}
+        listeners={() => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("Modal")
+          }
+        })}
       />
 
-      <Tab.Screen name="my ketches" component={KetchesScreen} options={{
+      <Tab.Screen name="Ketches" component={KetchesScreen} options={{
         // tabBarLabel: 'Home',
         tabBarIcon: ({ focused }) => (
           <View style={{ alignItems: "center", justifyContent: "center", top: 10 }}>

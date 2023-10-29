@@ -8,12 +8,15 @@ import useAuth from '../hooks/useAuth';
 import CreateKetchScreen from '../screens/CreateKetchScreen';
 import JoinKetchScreen from '../screens/JoinKetchScreen';
 import ModalKetch from '../screens/ModalKetch';
+import SingleKetchScreen from '../screens/SingleKetchScreen';
+import SwipeActivityScreen from '../screens/SwipeActivityScreen';
+import KetchesScreen from '../screens/KetchesScreen';
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
     // user = ""; // placeholder
-    const {user} = useAuth();
+    const { user } = useAuth();
     return (
         <NavigationContainer >
             <Stack.Navigator screenOptions={{
@@ -25,6 +28,10 @@ const StackNavigator = () => {
                             <Stack.Screen name="Tab" component={Tabbar} />
                             <Stack.Screen name="Join" component={JoinKetchScreen} />
                             <Stack.Screen name="Create" component={CreateKetchScreen} />
+                            <Stack.Screen name="Ketch" component={SingleKetchScreen} />
+                            <Stack.Screen name="Swipe" component={SwipeActivityScreen} />
+                            <Stack.Screen name="Ketches" component={KetchesScreen} />
+
 
                         </Stack.Group>
                         <Stack.Group screenOptions={{ presentation: "containedTransparentModal" }}>

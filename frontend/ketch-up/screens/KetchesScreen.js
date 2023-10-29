@@ -17,14 +17,14 @@ const ketchType = ["scheduled", "planning", "completed", "canceled"]
 const data = [];
 
 
-const KetchesScreen = () => {
+const KetchesScreen = ({ navigation }) => {
   const [activeKetchType, setActiveKetchType] = useState("scheduled");
   const [isEmpty, setIsEmpty] = useState(false);
   return (
     <StyledSafeAreaView className='flex-1 bg-background'>
       <StyledView className='p-5'>
         <StyledView>
-          <StyledText className='font-semibold text-xl'>manage my ketches</StyledText>
+          <StyledText className='font-semibold text-2xl'>manage my ketches</StyledText>
 
           {/* filter */}
           <View>
@@ -99,7 +99,7 @@ const KetchesScreen = () => {
                   </StyledView>
                 </StyledView>
 
-                <TouchableOpacity style={{ alignSelf: 'center' }}>
+                <TouchableOpacity onPress={() => { navigation.navigate("Ketch") }} style={{ alignSelf: 'center' }}>
                   <Entypo name="dots-three-vertical" size={30} color={colors.dark[200]} />
                 </TouchableOpacity>
 

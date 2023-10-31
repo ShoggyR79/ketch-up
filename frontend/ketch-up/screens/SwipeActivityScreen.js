@@ -98,10 +98,6 @@ const SwipeActivityScreen = ({ route, navigation }) => {
                                     ketchId
                                 })
                             })
-                            // const data = await response.json()
-                            // if(data.status == 400){
-
-                            // }
                         }}
                         overlayLabels={{
                             left: {
